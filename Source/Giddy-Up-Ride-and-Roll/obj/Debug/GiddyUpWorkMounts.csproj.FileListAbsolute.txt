@@ -1,0 +1,4 @@
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Work-Mounts\Assemblies\GiddyUpWorkMounts.dll
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Work-Mounts\Source\Giddy-Up-Work-Mounts\obj\Debug\GiddyUpWorkMounts.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Work-Mounts\Source\Giddy-Up-Work-Mounts\obj\Debug\GiddyUpWorkMounts.dll
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Work-Mounts\Source\Giddy-Up-Work-Mounts\obj\Debug\GiddyUpWorkMounts.csprojResolveAssemblyReference.cache

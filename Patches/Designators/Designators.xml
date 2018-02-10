@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationSequence">
+		<success>Always</success>
+		<operations>
+			<li Class="PatchOperationAdd">
+				<xpath>/Defs/DesignationCategoryDef[defName="Zone"]/specialDesignatorClasses</xpath>
+				<value>
+					<li>GiddyUpRideAndRoll.Zones.Designator_GU_NoMount_Expand</li>
+				</value>
+				<order>Append</order>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>/Defs/DesignationCategoryDef[defName="Zone"]/specialDesignatorClasses</xpath>
+				<value>
+					<li>GiddyUpRideAndRoll.Zones.Designator_GU_NoMount_Clear</li>
+				</value>
+				<order>Append</order>
+			</li>
+		</operations>
+	</Operation>
+</Patch>
