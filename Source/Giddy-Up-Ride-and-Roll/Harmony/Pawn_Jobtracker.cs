@@ -87,26 +87,29 @@ namespace GiddyUpRideAndRoll.Harmony
 
                 if (timeNeededAlternative < timeNeededOriginal)
                 {
-                    Job dismountJob = new Job(GUC_JobDefOf.Dismount);
-                    dismountJob.count = 1;
-                    Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
-                    mountJob.count = 1;
-
-                    store.GetExtendedDataFor(pawn).owning = closestAnimal;
-
-                    __instance.jobQueue.EnqueueFirst(__result.Job);
-                    __instance.jobQueue.EnqueueFirst(dismountJob);
-                    __instance.jobQueue.EnqueueFirst(new Job(JobDefOf.Goto, target));
-
-                    __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
-                    Log.Message("pawn " + pawn.Name + "should start mounting!");
+                    __result = insertMountingJobs(pawn, closestAnimal, target, store, __instance, __result);
                 }
             }
-            //TODO refactor into function in Giddy-up core
+
+        }
+
+        private static ThinkResult insertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, ExtendedDataStorage store,  Pawn_JobTracker __instance, ThinkResult __result)
+        {
+            Job dismountJob = new Job(GUC_JobDefOf.Dismount);
+            dismountJob.count = 1;
+            Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
+            mountJob.count = 1;
+            Job oldJob = __result.Job;
+            store.GetExtendedDataFor(pawn).owning = closestAnimal;
 
 
 
+            __instance.jobQueue.EnqueueFirst(oldJob);
+            __instance.jobQueue.EnqueueFirst(dismountJob);
+            __instance.jobQueue.EnqueueFirst(new Job(JobDefOf.Goto, target));
 
+            __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
+            return __result;
         }
 
 
@@ -120,10 +123,7 @@ namespace GiddyUpRideAndRoll.Harmony
                                             select p)
             {
                 float distance = DistanceUtility.QuickDistance(animal.Position, pawn.Position);
-
-
-
-                if (distance < minDistance && canMount(animal) && animal.CurJob != null && animal.CurJob.def != GUC_JobDefOf.Mounted)
+                if (distance < minDistance && IsMountableUtility.isMountable(animal) && animal.CurJob != null && animal.CurJob.def != GUC_JobDefOf.Mounted)
                 {
                     closestAnimal = animal;
                     minDistance = distance;
@@ -133,46 +133,5 @@ namespace GiddyUpRideAndRoll.Harmony
 
 
         }
-        //refactor to function in Giddy-up Core!
-        private static bool canMount(Pawn animal)
-        {
-            bool found = GiddyUpCore.Base.animalSelecter.Value.InnerList.TryGetValue(animal.def.defName, out AnimalRecord value);
-            if (found && !value.isSelected)
-            {
-                return false;
-            }
-            if(animal.Faction != Faction.OfPlayer)
-            {
-                return false;
-            }
-            if (animal.InMentalState ||
-                animal.IsBurning() ||
-                animal.CurJob == null ||
-                animal.CurJob.def == JobDefOf.LayEgg ||
-                animal.CurJob.def == JobDefOf.Nuzzle ||
-                animal.CurJob.def == JobDefOf.Lovin ||
-                animal.CurJob.def == JobDefOf.WaitDowned ||
-                animal.CurJob.def == GUC_JobDefOf.Mounted
-                )
-            {
-                return false;
-            }
-
-            if (animal.ageTracker.CurLifeStageIndex != animal.RaceProps.lifeStageAges.Count - 1)
-            {
-                return false;
-            }
-
-            if (!(animal.training != null && animal.training.IsCompleted(TrainableDefOf.Obedience)))
-            {
-                return false;
-            }
-            return true;
-        }
-
-
-
-
-
     }
 }

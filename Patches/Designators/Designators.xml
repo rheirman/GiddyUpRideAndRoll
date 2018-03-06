@@ -17,6 +17,20 @@
 				</value>
 				<order>Append</order>
 			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>/Defs/DesignationCategoryDef[defName="Zone"]/specialDesignatorClasses</xpath>
+				<value>
+					<li>GiddyUpRideAndRoll.Zones.Designator_GU_DropAnimal_Expand</li>
+				</value>
+				<order>Append</order>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>/Defs/DesignationCategoryDef[defName="Zone"]/specialDesignatorClasses</xpath>
+				<value>
+					<li>GiddyUpRideAndRoll.Zones.Designator_GU_DropAnimal_Clear</li>
+				</value>
+				<order>Append</order>
+			</li>
 		</operations>
 	</Operation>
 </Patch>
