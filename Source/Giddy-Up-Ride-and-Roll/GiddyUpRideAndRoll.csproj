@@ -59,12 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
-    <Compile Include="Harmony\GenPath.cs" />
+    <Compile Include="Harmony\Pawn_PathFollower.cs" />
     <Compile Include="Harmony\JobDriver.cs" />
     <Compile Include="Harmony\JobDriver_Mounted.cs" />
     <Compile Include="Harmony\Pawn_Jobtracker.cs" />
     <Compile Include="Jobs\GU_RR_JobDefOf.cs" />
     <Compile Include="Jobs\JobDriver_RideToJob.cs" />
+    <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Anyone.cs" />
+    <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Master.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Zones\Designator_GU_DropAnimal_Clear.cs" />
     <Compile Include="Zones\Designator_GU_DropAnimal_Expand.cs" />

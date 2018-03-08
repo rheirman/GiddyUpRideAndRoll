@@ -12,13 +12,18 @@ using Verse.AI;
 namespace GiddyUpRideAndRoll.Harmony
 {
     //Make sure mounted pawns avoid mount forbidden areas
-    //TODO: test impact on performance
+    //Didn't get this working yet without severely affecting performance. Will probably be too much effort for the given benefit. 
     /*
-    [HarmonyPatch(typeof(GenPath), "ShouldNotEnterCell")]
-    static class GenPath_ShouldNotEnterCell
+    [HarmonyPatch(typeof(RegionCostCalculator), "GetCellCostFast")]
+    static class Pawn_PathFollower_GetCellCostFast
     {
-        static void Postfix(Pawn pawn, Map map, IntVec3 dest, ref bool __result)
+        static void Postfix(RegionCostCalculator __instance, int index, ref int __result)
         {
+
+            TraverseParms parms = Traverse.Create(__instance).Field("traverseParms").GetValue<TraverseParms>();
+            Pawn pawn = parms.pawn;
+            IntVec3 cell = CellIndicesUtility.IndexToCell(index, pawn.Map.pathGrid.pathGrid.Count());
+            Log.Message("cell: + " + cell.ToString());
             if(pawn.Drafted || pawn.Faction != Faction.OfPlayer)
             {
                 return;
@@ -38,13 +43,14 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-            if (areaNoMount.ActiveCells.Contains(dest))
+            if (areaNoMount.ActiveCells.Contains(cell))
             {
-                Log.Message("pawn " + pawn.Name + " should not enter cell " + dest);
-                __result = true;
+                Log.Message("pawn " + pawn.Name + " should not enter cell " + cell);
+                __result += 100;
             }
 
         }
     }
     */
+
 }

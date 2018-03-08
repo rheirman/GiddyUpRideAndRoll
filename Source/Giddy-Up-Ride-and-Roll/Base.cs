@@ -9,6 +9,8 @@ using UnityEngine;
 using HugsLib.Settings;
 using GiddyUpCore.Storage;
 using RimWorld;
+using System.Reflection;
+using Harmony;
 
 namespace GiddyUpRideAndRoll
 {
@@ -28,7 +30,18 @@ namespace GiddyUpRideAndRoll
         }
         public override void DefsLoaded()
         {
-
+            PawnTableDef animalsTable = PawnTableDefOf.Animals;
+            foreach (PawnColumnDef def in from td in DefDatabase<PawnColumnDef>.AllDefsListForReading
+                                          orderby td.index descending
+                                          select td)
+            {
+                if(def.defName == "MountableByMaster" || def.defName == "MountableByAnyone")
+                {
+                    animalsTable.columns.Add(def);
+                }
+                Log.Message("defname found: " + def.defName);
+            }
+            Log.Message("defsloaded");
         }
 
         public ExtendedDataStorage GetExtendedDataStorage()

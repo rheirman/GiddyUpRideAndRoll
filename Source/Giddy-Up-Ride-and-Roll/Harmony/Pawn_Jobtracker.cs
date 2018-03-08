@@ -58,19 +58,8 @@ namespace GiddyUpRideAndRoll.Harmony
             if( pawnData.mount != null) {
                 return;
             }
-            Pawn closestAnimal;         
-            if(pawnData.mount != null)
-            {
-                closestAnimal = pawnData.mount;
-            }
-            else
-            {
-                closestAnimal = GetClosestAnimal(pawn);
-            }
-            if (closestAnimal == null)
-            {
-                return;
-            }
+            Pawn bestChoiceAnimal;         
+
 
             //LocalTargetInfo dest = __result.Job.GetDestination(pawn);
 
@@ -99,21 +88,22 @@ namespace GiddyUpRideAndRoll.Harmony
 
             if (totalDistance > 250)
             {
+                if (pawnData.mount != null)
+                {
+                    bestChoiceAnimal = pawnData.mount;
+                }
+                else
+                {
+                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, store);
+                }
+                if (bestChoiceAnimal != null)
+                {
+                    __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
+                }
 
-                float pawnAnimalDistance = DistanceUtility.QuickDistance(pawn.Position, closestAnimal.Position); 
-                float animalTargetDistance = DistanceUtility.QuickDistance(closestAnimal.Position, target.Cell);
-                //Abstract unit of time. Real time values aren't needed, only relative values. 
-                float timeNeededAlternative = (pawnAnimalDistance + animalTargetDistance + firstToSecondTargetDistance) * TicksPerMoveUtility.adjustedTicksPerMove(pawn, closestAnimal, true);
-                //Log.Message("timeNeededAlternative: " + timeNeededAlternative);
-                float timeNeededOriginal = (pawnTargetDistance + firstToSecondTargetDistance) * pawn.TicksPerMoveDiagonal;
                 //Log.Message("timeNeededOriginal: " + timeNeededOriginal);
                 //Log.Message("adjusted ticks per move: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, closestAnimal, true));
                 //Log.Message("original ticks per move: " + pawn.TicksPerMoveDiagonal);
-
-                if (timeNeededAlternative < timeNeededOriginal)
-                {
-                    __result = InsertMountingJobs(pawn, closestAnimal, target, pawnData, store.GetExtendedDataFor(closestAnimal), __instance, __result);
-                }
             }
 
         }
@@ -137,26 +127,45 @@ namespace GiddyUpRideAndRoll.Harmony
             return __result;
         }
 
-
-        static Pawn GetClosestAnimal(Pawn pawn)
+        //Gets animal that'll get the pawn to the target the quickest. Returns null if no animal is found or if walking is faster. 
+        static Pawn GetBestChoiceAnimal(Pawn pawn, LocalTargetInfo target, float pawnTargetDistance, float firstToSecondTargetDistance, ExtendedDataStorage store)
         {
 
-            float minDistance = float.MaxValue;
+            //float minDistance = float.MaxValue;
             Pawn closestAnimal = null;
+            float timeNeededMin = (pawnTargetDistance + firstToSecondTargetDistance) * pawn.TicksPerMoveDiagonal;
+
             foreach (Pawn animal in from p in pawn.Map.mapPawns.AllPawns
-                                            where p.RaceProps.Animal
+                                            where p.RaceProps.Animal && IsMountableUtility.isMountable(p) && p.CurJob.def != GUC_JobDefOf.Mounted
                                             select p)
             {
-                float distance = DistanceUtility.QuickDistance(animal.Position, pawn.Position);
-                if (distance < minDistance && IsMountableUtility.isMountable(animal) && animal.CurJob != null && animal.CurJob.def != GUC_JobDefOf.Mounted)
+                ExtendedPawnData pawnData = store.GetExtendedDataFor(animal);
+                if (!pawnData.mountableByMaster && !pawnData.mountableByAnyone)
+                {
+                    continue;
+                }
+                else if (!pawnData.mountableByAnyone && pawnData.mountableByMaster)
+                {
+                    if(animal.playerSettings != null && animal.playerSettings.master != pawn)
+                    {
+                        continue;
+                    }
+                }
+
+                float pawnAnimalDistance = DistanceUtility.QuickDistance(pawn.Position, animal.Position);
+                float animalTargetDistance = DistanceUtility.QuickDistance(animal.Position, target.Cell);
+                float timeNeeded = (pawnAnimalDistance + animalTargetDistance + firstToSecondTargetDistance) * TicksPerMoveUtility.adjustedTicksPerMove(pawn, animal, true);
+
+                if(timeNeeded < timeNeededMin)
                 {
                     closestAnimal = animal;
-                    minDistance = distance;
                 }
             }
+
+            //Abstract unit of time. Real time values aren't needed, only relative values. 
+            //Log.Message("timeNeededAlternative: " + timeNeededAlternative);
+
             return closestAnimal;
-
-
         }
     }
 }

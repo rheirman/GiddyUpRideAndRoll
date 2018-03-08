@@ -1,0 +1,18 @@
+   <Defs>
+	  <PawnColumnDef>
+		<defName>MountableByAnyone</defName>
+		<workerClass>GiddyUpRideAndRoll.PawnColumns.PawnColumnWorker_RR_Mountable_Anyone</workerClass>
+		<sortable>true</sortable>
+		<headerIcon>UI/GU_RR_Designator_GU_DropAnimal_Expand</headerIcon>
+		<headerTip>Can be mounted by any pawn.</headerTip>
+		<headerIconSize>(16,16)</headerIconSize>
+	  </PawnColumnDef>
+	  <PawnColumnDef>
+		<defName>MountableByMaster</defName>
+		<workerClass>GiddyUpRideAndRoll.PawnColumns.PawnColumnWorker_RR_Mountable_Master</workerClass>
+		<sortable>true</sortable>
+		<headerIcon>UI/GU_RR_Designator_GU_DropAnimal_Clear</headerIcon>
+		<headerTip>Can be mounted only by the master.</headerTip>
+		<headerIconSize>(16,16)</headerIconSize>
+	  </PawnColumnDef>
+  </Defs>
