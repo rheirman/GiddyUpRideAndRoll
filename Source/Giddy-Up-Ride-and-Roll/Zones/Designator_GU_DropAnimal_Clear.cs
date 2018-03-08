@@ -16,7 +16,7 @@ namespace GiddyUpRideAndRoll.Zones
             defaultLabel = "GU_RR_Designator_GU_DropAnimal_Clear_Label".Translate();
             defaultDesc = "GU_RR_Designator_GU_DropAnimal_Clear_Description".Translate();
             icon = ContentFinder<Texture2D>.Get("UI/GU_RR_Designator_GU_DropAnimal_Clear", true);
-            areaLabel = Base.DROPMOUNT_LABEL;
+            areaLabel = Base.DROPANIMAL_LABEL;
         }
         public override void DesignateSingleCell(IntVec3 c)
         {

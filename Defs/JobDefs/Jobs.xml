@@ -1,0 +1,8 @@
+  <Defs>
+	  <JobDef>
+		<defName>RideToJob</defName>
+		<driverClass>GiddyUpRideAndRoll.Jobs.JobDriver_RideToJob</driverClass>
+		<reportString>Riding to job</reportString>
+		<casualInterruptible>false</casualInterruptible>
+	  </JobDef>
+  </Defs>

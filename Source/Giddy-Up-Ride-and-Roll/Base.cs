@@ -16,7 +16,7 @@ namespace GiddyUpRideAndRoll
     {
         internal static Base Instance { get; private set; }
         internal const string NOMOUNT_LABEL = "Gu_Area_NoMount";
-        internal const string DROPMOUNT_LABEL = "Gu_Area_DropMount";
+        internal const string DROPANIMAL_LABEL = "Gu_Area_DropMount";
 
         public override string ModIdentifier
         {
