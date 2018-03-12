@@ -29,7 +29,7 @@ namespace GiddyUpRideAndRoll.Zones
         }
         public override AcceptanceReport CanDesignateCell(IntVec3 c)
         {
-            return c.InBounds(base.Map) && selectedArea != null && !selectedArea[c];
+            return c.InBounds(base.Map) && selectedArea != null && !selectedArea[c] && !c.Impassable(base.Map);
         }
     }
 }

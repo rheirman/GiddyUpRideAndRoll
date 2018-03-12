@@ -57,19 +57,25 @@ namespace GiddyUpRideAndRoll.Harmony
                     toil.AddPreTickAction(delegate
                     {
 
-                        if (!checkedToil && pawnData.mount != null && areaNoMount.ActiveCells.Contains(toil.actor.pather.Destination.Cell))
+                        if (!checkedToil && pawnData.mount != null && areaDropAnimal.ActiveCells.Count() > 0 && areaNoMount.ActiveCells.Contains(toil.actor.pather.Destination.Cell))
                         {
                             //Toil parkToil = ParkToil(__instance, toils, pawnData, areaDropAnimal, toils[__instance.CurToilIndex]);
                             //toils.Add(parkToil);
-                            parkLoc = DistanceUtility.getClosestAreaLoc(toil.actor.Position, areaDropAnimal);
+                            parkLoc = DistanceUtility.getClosestAreaLoc(toil.actor.pather.Destination.Cell, areaDropAnimal);
                             originalLoc = toil.actor.pather.Destination.Cell;
-                            toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
-                            pawnData.selectedForCaravan = true;
-                            startedPark = true;
+                            if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
+                            {
+                                toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
+                                pawnData.selectedForCaravan = true;
+                                startedPark = true;
+                            }
+                            else
+                            {
+                                Messages.Message("Pawn couldn't reach Giddy-up! Drop off point. Make sure all drop off points are reachable", new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
+                            }
                         }
                         checkedToil = true;
                         if (startedPark && toil.actor.pather.nextCell == parkLoc){
-                            Log.Message("should get off animal");
                             pawnData.mount = null;
                             toil.actor.pather.StartPath(originalLoc, PathEndMode.ClosestTouch);
                             if (pawnData.owning != null)
@@ -83,10 +89,6 @@ namespace GiddyUpRideAndRoll.Harmony
                     });
                 }
             }
-
-        }
-        private static void Test(ref JobDriver __instance)
-        {
 
         }
 

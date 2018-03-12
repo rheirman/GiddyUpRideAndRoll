@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using Verse.AI;
 
 namespace GiddyUpRideAndRoll.Harmony
 {
@@ -24,4 +25,26 @@ namespace GiddyUpRideAndRoll.Harmony
             }
         }
     }
+    
+    [HarmonyPatch(typeof(JobDriver_Mounted), "ExtraFinishAction")]
+    class JobDriver_Mounted_FinishAction
+    {
+        static void Postfix(JobDriver_Mounted __instance)
+        {
+            ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(__instance.pawn);
+            if(!__instance.pawn.Drafted && __instance.pawn.Faction == Faction.OfPlayer && pawnData.ownedBy != null)
+            {
+                if (__instance.pawn.playerSettings != null &&
+                    __instance.pawn.playerSettings.master != null &&
+                    (__instance.pawn.playerSettings.master != __instance.Rider || __instance.pawn.playerSettings.followFieldwork))
+                {
+                    //TODO: this job gets cancelled now, should make it more dominant.
+                    __instance.pawn.jobs.TryTakeOrderedJob(new Job(JobDefOf.Wait, 5000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master. 
+                }
+            }
+        }
+    }
+    
+    
+
 }

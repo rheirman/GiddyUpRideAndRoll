@@ -31,6 +31,7 @@ namespace GiddyUpRideAndRoll
         public override void DefsLoaded()
         {
             PawnTableDef animalsTable = PawnTableDefOf.Animals;
+            Log.Message("mod called!");
             foreach (PawnColumnDef def in from td in DefDatabase<PawnColumnDef>.AllDefsListForReading
                                           orderby td.index descending
                                           select td)

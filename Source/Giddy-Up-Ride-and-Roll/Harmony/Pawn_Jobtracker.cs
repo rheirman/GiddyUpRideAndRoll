@@ -33,6 +33,10 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
+            if (pawn.Drafted)
+            {
+                return;
+            }
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
 
 
@@ -47,7 +51,6 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
 
@@ -58,8 +61,13 @@ namespace GiddyUpRideAndRoll.Harmony
             if( pawnData.mount != null) {
                 return;
             }
-            Pawn bestChoiceAnimal;         
+            if (pawnData.wasRidingToJob)
+            {
+                pawnData.wasRidingToJob = false;
+                return;
+            }
 
+            Pawn bestChoiceAnimal;
 
             //LocalTargetInfo dest = __result.Job.GetDestination(pawn);
 
@@ -88,42 +96,58 @@ namespace GiddyUpRideAndRoll.Harmony
 
             if (totalDistance > 250)
             {
-                if (pawnData.mount != null)
-                {
-                    bestChoiceAnimal = pawnData.mount;
-                }
-                else
-                {
-                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, store);
-                }
+
+                bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, store);
                 if (bestChoiceAnimal != null)
                 {
-                    __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
+                    __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, targetB, pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
                 }
 
                 //Log.Message("timeNeededOriginal: " + timeNeededOriginal);
                 //Log.Message("adjusted ticks per move: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, closestAnimal, true));
                 //Log.Message("original ticks per move: " + pawn.TicksPerMoveDiagonal);
             }
-
         }
 
-        private static ThinkResult InsertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, ExtendedPawnData pawnData, ExtendedPawnData animalData,  Pawn_JobTracker __instance, ThinkResult __result)
+        private static ThinkResult InsertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, LocalTargetInfo secondTarget, ExtendedPawnData pawnData, ExtendedPawnData animalData,  Pawn_JobTracker __instance, ThinkResult __result)
         {
             Job dismountJob = new Job(GUC_JobDefOf.Dismount);
-            dismountJob.count = 1;
-            Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
-            mountJob.count = 1;
+            Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal, target, secondTarget);
+            Job rideToJob = new Job(GU_RR_JobDefOf.RideToJob, target, secondTarget);
             Job oldJob = __result.Job;
+
+            mountJob.count = 1;
+            rideToJob.count = 1;
             pawnData.owning = closestAnimal;
             animalData.ownedBy = pawn;
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             //__instance.jobQueue.EnqueueFirst(dismountJob);
+            if (pawn.CanReserve(target))
+            {
+                if(target.Thing is Building_Bed)
+                {
+                    Building_Bed bed = (Building_Bed)target.Thing;
+                    
+                    mountJob.count = bed.SleepingSlotsCount;
+                    rideToJob.count = bed.SleepingSlotsCount;
+                }
+                if(oldJob.def.joyMaxParticipants > 1)
+                {
+                    mountJob.count = oldJob.def.joyMaxParticipants;
+                    rideToJob.count = oldJob.def.joyMaxParticipants;
+                }
+                
+                __instance.jobQueue.EnqueueFirst(oldJob);
+                __instance.jobQueue.EnqueueFirst(rideToJob);
 
-            __instance.jobQueue.EnqueueFirst(oldJob);
-            __instance.jobQueue.EnqueueFirst(new Job(GU_RR_JobDefOf.RideToJob, target));
+                __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
+            }
+            else
+            {
+                Log.Message("cannot reserve target!" + pawn.Name);
+            }
 
-            __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
+
             return __result;
         }
 
@@ -135,10 +159,14 @@ namespace GiddyUpRideAndRoll.Harmony
             Pawn closestAnimal = null;
             float timeNeededMin = (pawnTargetDistance + firstToSecondTargetDistance) * pawn.TicksPerMoveDiagonal;
 
-            foreach (Pawn animal in from p in pawn.Map.mapPawns.AllPawns
+            foreach (Pawn animal in from p in pawn.Map.mapPawns.AllPawnsSpawned
                                             where p.RaceProps.Animal && IsMountableUtility.isMountable(p) && p.CurJob.def != GUC_JobDefOf.Mounted
                                             select p)
             {
+                if(animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState)
+                {
+                    continue;
+                }
                 ExtendedPawnData pawnData = store.GetExtendedDataFor(animal);
                 if (!pawnData.mountableByMaster && !pawnData.mountableByAnyone)
                 {
