@@ -17,7 +17,10 @@ namespace GiddyUpRideAndRoll.Harmony
     {
         static void Postfix(ref JobDriver __instance)
         {
-            JobDriver instance = __instance;
+            if (__instance.pawn.Map == null)
+            {
+                return;
+            }
             List<Toil> toils = Traverse.Create(__instance).Field("toils").GetValue<List<Toil>>();
             if (__instance.pawn.Faction != Faction.OfPlayer || __instance.pawn.Drafted)
             {
@@ -29,11 +32,14 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
             ExtendedPawnData pawnData = store.GetExtendedDataFor(__instance.pawn);
+
+       
             Area_GU areaNoMount = (Area_GU)__instance.pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
             Area_GU areaDropAnimal = (Area_GU)__instance.pawn.Map.areaManager.GetLabeled(Base.DROPANIMAL_LABEL);
             bool startedPark = false;
             IntVec3 originalLoc = new IntVec3();
             IntVec3 parkLoc = new IntVec3();
+
             if (pawnData.mount != null && areaNoMount != null && areaDropAnimal != null)
             {
 
