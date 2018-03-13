@@ -212,6 +212,7 @@ namespace GiddyUpRideAndRoll.Harmony
         private static bool AnimalBusy(Pawn animal)
         {
             bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
+            bool formingCaravan = animal.mindState != null && animal.mindState.duty != null && (animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Wait || animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Pause);
             bool shouldNotInterrupt = animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted);
             return animalInBadState || shouldNotInterrupt;
         }

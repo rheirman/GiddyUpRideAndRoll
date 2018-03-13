@@ -45,19 +45,6 @@ namespace GiddyUpRideAndRoll.Harmony
 
                 foreach (Toil toil in toils)
                 {
-                    /*
-                    toil.AddFinishAction(delegate
-                    {
-                        Toil nextToil = null;
-                        int nextToilIndex = Traverse.Create(__instance).Field("nextToilIndex").GetValue<int>();
-                        if(nextToilIndex >= 0)
-                        {
-                            nextToil = toils[nextToilIndex];
-                        }
-                        nextToil.initAction.Method
-                    });
-                    */
-
                     //checkedToil makes sure the ActiveCells.Contains is only called once, preventing performance impact. 
                     bool checkedToil = false;
                     toil.AddPreTickAction(delegate
