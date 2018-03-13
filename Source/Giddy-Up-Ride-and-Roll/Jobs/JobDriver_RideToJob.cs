@@ -40,13 +40,12 @@ namespace GiddyUpRideAndRoll.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-
-            Toil gotoCell = Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.Touch);
+            IntVec3 dest = CellFinder.RandomClosewalkCellNear(this.job.targetB.Cell, Map, 5);
+            Toil gotoCell = Toils_Goto.GotoCell(dest, PathEndMode.OnCell);
             this.AddFinishAction(delegate
             {
                 ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(this.pawn);
                 pawnData.wasRidingToJob = true;
-                ;
             });
             yield return gotoCell;
         }
