@@ -16,7 +16,7 @@ namespace GiddyUpRideAndRoll.Harmony
     class JobDriver_Mounted_ShouldCancelJob
     {
         //TODO: maybe xml this instead of hard coding. 
-        static JobDef[] allowedJobs = {GU_RR_JobDefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Hunt, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.Tame, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.WaitCombat, JobDefOf.WaitMaintainPosture, JobDefOf.WaitSafeTemperature, JobDefOf.WaitWander, JobDefOf.Wear};
+        static JobDef[] allowedJobs = {GU_RR_JobDefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Hunt, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.WaitCombat, JobDefOf.WaitMaintainPosture, JobDefOf.WaitSafeTemperature, JobDefOf.WaitWander, JobDefOf.Wear};
         static void Postfix(ExtendedPawnData riderData, JobDriver_Mounted __instance, ref bool __result)
         {
             if (__instance.pawn.Faction == Faction.OfPlayer && !allowedJobs.Contains(__instance.Rider.CurJob.def))
@@ -25,27 +25,25 @@ namespace GiddyUpRideAndRoll.Harmony
             }
         }
     }
-    
+
     [HarmonyPatch(typeof(JobDriver_Mounted), "ExtraFinishAction")]
     class JobDriver_Mounted_FinishAction
     {
         static void Postfix(JobDriver_Mounted __instance)
         {
-            Log.Message("calling extra finishAction");
             ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(__instance.pawn);
             if(!__instance.Rider.Drafted && __instance.pawn.Faction == Faction.OfPlayer)
             {
-                if (__instance.pawn.playerSettings != null &&
-                    (__instance.pawn.playerSettings.master == null || __instance.pawn.playerSettings.master != __instance.Rider || __instance.pawn.playerSettings.followFieldwork == false))
+                if (pawnData.ownedBy != null)
                 {
                     //TODO: this job gets cancelled now, should make it more dominant.
-                    Log.Message("should wait for a while now!");
-                    __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 1000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.
+                    __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 50000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.
                     //__instance.pawn.jobs.TryTakeOrderedJob(new Job(JobDefOf.Wait, 10000, true)); 
                 }
             }
         }
     }
+
     
     
 

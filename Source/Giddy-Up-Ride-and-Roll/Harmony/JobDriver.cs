@@ -66,7 +66,6 @@ namespace GiddyUpRideAndRoll.Harmony
                             if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
                             {
                                 toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
-                                pawnData.selectedForCaravan = true;
                                 startedPark = true;
                             }
                             else
@@ -80,6 +79,7 @@ namespace GiddyUpRideAndRoll.Harmony
                             toil.actor.pather.StartPath(originalLoc, PathEndMode.ClosestTouch);
                             if (pawnData.owning != null)
                             {
+                                Log.Message("reached parking spot. unsetting owner/ownedBy");
                                 ExtendedPawnData animalData = store.GetExtendedDataFor(pawnData.owning);
                                 animalData.ownedBy = null;
                                 pawnData.owning = null;
@@ -92,34 +92,6 @@ namespace GiddyUpRideAndRoll.Harmony
 
         }
 
-        private static Toil ParkToil(JobDriver __instance, List<Toil> toils, ExtendedPawnData pawnData, Area_GU areaDropAnimal, Toil OldToil)
-        {
-
-            Toil parkToil = new Toil();
-            parkToil.initAction = delegate
-            {
-                Log.Message("parktoil initaction called");
-                IntVec3 parkLoc = DistanceUtility.getClosestAreaLoc(__instance.pawn.Position, areaDropAnimal);
-                parkToil.initAction = delegate
-                {
-                    Pawn actor = parkToil.actor;
-                    actor.pather.StartPath(parkLoc, PathEndMode.ClosestTouch);
-                };
-                parkToil.defaultCompleteMode = ToilCompleteMode.PatherArrival;
-                //parkToil.FailOnDespawnedOrNull(ind);
-
-            };
-            if (parkToil.finishActions == null)
-            {
-                parkToil.finishActions = new List<Action>();
-            }
-            parkToil.finishActions.Add(delegate {
-                Log.Message("finishAction of parktoil called");
-                pawnData.mount = null;
-                //__instance.JumpToToil(OldToil);
-            });
-            return parkToil;
-        }
     }
 
 
