@@ -83,7 +83,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
             float totalDistance = pawnTargetDistance + firstToSecondTargetDistance;
             bool walkToSecondTarget = false;
-            if(totalDistance > 250) //If the first target is in forbidden zone, pawn has to walk to second target, in that case only look for animal if distance to targetA is larger than bound
+            if(totalDistance > Base.minAutoMountDistance) //If the first target is in forbidden zone, pawn has to walk to second target, in that case only look for animal if distance to targetA is larger than bound
             {
                 Area_GU areaNoMount = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
                 if(areaNoMount != null && areaNoMount.ActiveCells.Contains(target.Cell))
@@ -93,7 +93,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 }
             }
 
-            if (totalDistance > 250)
+            if (totalDistance > Base.minAutoMountDistance)
             {
                 bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, walkToSecondTarget, store);
 
@@ -176,6 +176,10 @@ namespace GiddyUpRideAndRoll.Harmony
             //__instance.jobQueue.EnqueueFirst(dismountJob);
             if (pawn.CanReserve(target) && pawn.CanReserve(closestAnimal))
             {
+                if(oldJob.targetC != null)
+                {
+                    pawnData.extraJobTarget = oldJob.targetC;
+                }
                 if (target.Thing is Building_Bed)
                 {
                     Building_Bed bed = (Building_Bed)target.Thing;
@@ -212,9 +216,9 @@ namespace GiddyUpRideAndRoll.Harmony
         private static bool AnimalBusy(Pawn animal)
         {
             bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
-            bool formingCaravan = animal.mindState != null && animal.mindState.duty != null && (animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Wait || animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Pause);
+            bool formingCaravan = animal.mindState != null && animal.mindState.duty != null && (animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Wait || animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Pause || animal.mindState.duty.def == DutyDefOf.PrepareCaravan_GatherPawns);
             bool shouldNotInterrupt = animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted);
-            return animalInBadState || shouldNotInterrupt;
+            return animalInBadState || shouldNotInterrupt || formingCaravan;
         }
 
         //uses abstract unit of time. Real time values aren't needed, only relative values. 
@@ -256,7 +260,7 @@ namespace GiddyUpRideAndRoll.Harmony
             }
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, target.Cell);
-            if(pawnTargetDistance > 50)
+            if(pawnTargetDistance > 7 || __result.Job.def == JobDefOf.LayDown)
             {
                 if(pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)
                 {

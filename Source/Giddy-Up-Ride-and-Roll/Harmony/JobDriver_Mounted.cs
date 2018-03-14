@@ -12,6 +12,8 @@ using Verse.AI;
 
 namespace GiddyUpRideAndRoll.Harmony
 {
+
+
     [HarmonyPatch(typeof(JobDriver_Mounted), "shouldCancelJob")]
     class JobDriver_Mounted_ShouldCancelJob
     {
@@ -19,10 +21,60 @@ namespace GiddyUpRideAndRoll.Harmony
         static JobDef[] allowedJobs = {GU_RR_JobDefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Hunt, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.WaitCombat, JobDefOf.WaitMaintainPosture, JobDefOf.WaitSafeTemperature, JobDefOf.WaitWander, JobDefOf.Wear};
         static void Postfix(ExtendedPawnData riderData, JobDriver_Mounted __instance, ref bool __result)
         {
-            if (__instance.pawn.Faction == Faction.OfPlayer && !__instance.pawn.Drafted && !allowedJobs.Contains(__instance.Rider.CurJob.def))
+            if (__instance.pawn.Faction == Faction.OfPlayer && !__instance.pawn.Drafted && __instance.Rider.CurJob != null && !allowedJobs.Contains(__instance.Rider.CurJob.def))
             {
                 __result = true;
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(JobDriver_Mounted), "TryMakePreToilReservations")]
+    class JobDriver_Mounted_TryMakePreToilReservations{
+    
+        static void Postfix(JobDriver_Mounted __instance, ref bool __result)
+        {
+            //TODO: refactor this. too much duplicate code in this and jobdriver_RideToJob
+            if (__instance.job.count == -1)
+            {
+                __instance.job.count = 1;
+            }
+            int stackCount = -1;
+            if (__instance.job.count > 1)
+            {
+                stackCount = 0;
+            }
+            ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
+
+            if (store != null)
+            {
+                ExtendedPawnData pawnData = store.GetExtendedDataFor(__instance.pawn);
+                LocalTargetInfo extraTarget = pawnData.extraJobTarget;
+                if (extraTarget != null)
+                {
+                    __result = __instance.pawn.Reserve(extraTarget, __instance.job, 1, -1, null);
+                }
+                pawnData.extraJobTarget = null;
+            }
+            if (!__instance.job.targetQueueA.NullOrEmpty())
+            {
+                __instance.pawn.ReserveAsManyAsPossible(__instance.job.targetQueueA, __instance.job, 1, -1, null);
+            }
+            if (!__instance.job.targetQueueB.NullOrEmpty())
+            {
+                __instance.pawn.ReserveAsManyAsPossible(__instance.job.targetQueueA, __instance.job, 1, -1, null);
+            }
+            if (__instance.job.targetB != null && __instance.job.targetC != null)
+            {
+                __result = __result && __instance.pawn.Reserve(__instance.job.GetTarget(TargetIndex.A), __instance.job, 1, -1, null) &&
+                    __instance.pawn.Reserve(__instance.job.GetTarget(TargetIndex.B), __instance.job, 1, -1, null) &&
+                    __instance.pawn.Reserve(__instance.job.GetTarget(TargetIndex.C), __instance.job, 1, -1, null);
+                return;
+            }
+            else if (__instance.job.targetB != null)
+            {
+                __result = __result && __instance.pawn.Reserve(__instance.job.GetTarget(TargetIndex.A), __instance.job, 1, -1, null) && __instance.pawn.Reserve(__instance.job.GetTarget(TargetIndex.B), __instance.job, __instance.job.count, stackCount, null);
+            }
+            return;
         }
     }
 
@@ -37,7 +89,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 if (pawnData.ownedBy != null)
                 {
                     //TODO: this job gets cancelled now, should make it more dominant.
-                    __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 50000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.
+                    __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 10000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.
                     //__instance.pawn.jobs.TryTakeOrderedJob(new Job(JobDefOf.Wait, 10000, true)); 
                 }
             }

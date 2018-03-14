@@ -19,6 +19,22 @@ namespace GiddyUpRideAndRoll.Jobs
             {
                 job.count = 1;
             }
+            int stackCount = -1;
+            if(job.count > 1)
+            {
+                stackCount = 0;
+            }
+            bool result = true;
+            ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
+
+            if(store != null )
+            {
+                LocalTargetInfo extraTarget = store.GetExtendedDataFor(this.pawn).extraJobTarget;
+                if(extraTarget != null)
+                {
+                    result = this.pawn.Reserve(extraTarget, this.job, 1, -1, null);
+                }
+            }
             if (!this.job.targetQueueA.NullOrEmpty())
             {
                 this.pawn.ReserveAsManyAsPossible(this.job.targetQueueA, this.job, 1, -1, null);
@@ -29,19 +45,27 @@ namespace GiddyUpRideAndRoll.Jobs
             }
             if (this.job.targetB != null && this.job.targetC != null)
             {
-                return this.pawn.Reserve(this.job.GetTarget(TargetIndex.A), this.job, 1, -1, null) && this.pawn.Reserve(this.job.GetTarget(TargetIndex.B), this.job, 1, -1, null) && this.pawn.Reserve(this.job.GetTarget(TargetIndex.C), this.job, 1, -1, null);
+                return result && this.pawn.Reserve(this.job.GetTarget(TargetIndex.A), this.job, 1, -1, null) && 
+                    this.pawn.Reserve(this.job.GetTarget(TargetIndex.B), this.job, 1, -1, null) && 
+                    this.pawn.Reserve(this.job.GetTarget(TargetIndex.C), this.job, 1, -1, null);
             }
             else if (this.job.targetB != null)
             {
-                return this.pawn.Reserve(this.job.GetTarget(TargetIndex.A), this.job, 1, -1, null) && this.pawn.Reserve(this.job.GetTarget(TargetIndex.B), this.job, this.job.count, -1, null);
+                return result && this.pawn.Reserve(this.job.GetTarget(TargetIndex.A), this.job, 1, -1, null) && this.pawn.Reserve(this.job.GetTarget(TargetIndex.B), this.job, this.job.count, stackCount, null);
             }
-            return true;
+            return result;
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            IntVec3 dest = CellFinder.RandomClosewalkCellNear(this.job.targetB.Cell, Map, 5);
-            Toil gotoCell = Toils_Goto.GotoCell(dest, PathEndMode.OnCell);
+            IntVec3 dest;
+            bool cellFound = CellFinder.TryFindRandomReachableCellNear(this.job.targetB.Cell, Map, 2, TraverseMode.PassDoors, (IntVec3 c) => c.Standable(pawn.Map), null, out dest);
+            if (!cellFound)
+            {
+                dest = this.job.targetB.Cell;
+            }
+
+            Toil gotoCell = Toils_Goto.GotoCell(dest, PathEndMode.Touch);
             this.AddFinishAction(delegate
             {
                 ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(this.pawn);

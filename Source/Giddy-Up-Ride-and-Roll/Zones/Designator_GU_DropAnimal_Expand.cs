@@ -14,7 +14,7 @@ namespace GiddyUpRideAndRoll.Zones
         public Designator_GU_DropAnimal_Expand() : base(DesignateMode.Add)
         {
             defaultLabel = "GU_RR_Designator_GU_DropAnimal_Expand_Label".Translate();
-            defaultDesc = "GU_RR_Designator_GU_NoMount_DropAnimal_Description".Translate();
+            defaultDesc = "GU_RR_Designator_GU_DropAnimal_Expand_Description".Translate();
             icon = ContentFinder<Texture2D>.Get("UI/GU_RR_Designator_GU_DropAnimal_Expand", true);
             areaLabel = Base.DROPANIMAL_LABEL;
         }
