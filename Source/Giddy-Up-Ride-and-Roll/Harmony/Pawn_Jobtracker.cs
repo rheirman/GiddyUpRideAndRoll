@@ -192,10 +192,15 @@ namespace GiddyUpRideAndRoll.Harmony
                     mountJob.count = oldJob.def.joyMaxParticipants;
                     rideToJob.count = oldJob.def.joyMaxParticipants;
                 }
-                if (oldJob.targetQueueA.Count > 1)
+                if (!oldJob.targetQueueA.NullOrEmpty())
                 {
                     mountJob.targetQueueA = oldJob.targetQueueA;
                     rideToJob.targetQueueA = oldJob.targetQueueA;
+                }
+                if (!oldJob.targetQueueB.NullOrEmpty())
+                {
+                    mountJob.targetQueueB = oldJob.targetQueueB;
+                    rideToJob.targetQueueB = oldJob.targetQueueB;
                 }
 
                 if (pawnData.mount != null)

@@ -41,7 +41,7 @@ namespace GiddyUpRideAndRoll.Jobs
             }
             if (!this.job.targetQueueB.NullOrEmpty())
             {
-                this.pawn.ReserveAsManyAsPossible(this.job.targetQueueA, this.job, 1, -1, null);
+                this.pawn.ReserveAsManyAsPossible(this.job.targetQueueB, this.job, 1, -1, null);
             }
             if (this.job.targetB != null && this.job.targetC != null)
             {

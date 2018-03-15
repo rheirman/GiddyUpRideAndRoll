@@ -61,7 +61,7 @@ namespace GiddyUpRideAndRoll.Harmony
             }
             if (!__instance.job.targetQueueB.NullOrEmpty())
             {
-                __instance.pawn.ReserveAsManyAsPossible(__instance.job.targetQueueA, __instance.job, 1, -1, null);
+                __instance.pawn.ReserveAsManyAsPossible(__instance.job.targetQueueB, __instance.job, 1, -1, null);
             }
             if (__instance.job.targetB != null && __instance.job.targetC != null)
             {
