@@ -60,4 +60,16 @@ namespace GiddyUpRideAndRoll.Harmony
             return;
         }
     }
+    [HarmonyPatch(typeof(JobDriver_Mount), "FinishAction")]
+    class JobDriver_Mount_FinishAction
+    {
+        static void Postfix(JobDriver_Mount __instance)
+        {
+            ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(__instance.pawn);
+            ExtendedPawnData animalData = store.GetExtendedDataFor(__instance.Mount);
+            pawnData.owning = __instance.Mount;
+            animalData.ownedBy = __instance.pawn;
+        }
+    }
 }

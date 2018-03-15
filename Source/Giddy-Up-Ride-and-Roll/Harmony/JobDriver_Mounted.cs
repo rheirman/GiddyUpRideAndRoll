@@ -30,7 +30,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
    
 
-    [HarmonyPatch(typeof(JobDriver_Mounted), "ExtraFinishAction")]
+    [HarmonyPatch(typeof(JobDriver_Mounted), "FinishAction")]
     class JobDriver_Mounted_FinishAction
     {
         static void Postfix(JobDriver_Mounted __instance)

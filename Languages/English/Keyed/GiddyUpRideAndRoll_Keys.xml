@@ -4,11 +4,11 @@
 <GU_RR_MinAutoMountDistance_Title>Min. distance for auto mounting </GU_RR_MinAutoMountDistance_Title>
 <GU_RR_MinAutoMountDistance_Description>Minimum distance a pawn will consider using a mount to get to its destination.</GU_RR_MinAutoMountDistance_Description>
 <GU_RR_Designator_GU_DropAnimal_Expand_Label>Place mount drop spot</GU_RR_Designator_GU_DropAnimal_Expand_Label> <!--Should be short-->
-<GU_RR_Designator_GU_DropAnimal_Expand_Description>When trying to enter a "riding forbidden" area while pawns are mounted, they will drop off the the animal they are riding at the nearest colony drop spot.</GU_RR_Designator_GU_DropAnimal_Expand_Description>
+<GU_RR_Designator_GU_DropAnimal_Expand_Description>When trying to enter a "forbid riding" area while pawns are mounted, they will drop off the the animal they are riding at the nearest colony drop spot.</GU_RR_Designator_GU_DropAnimal_Expand_Description>
 <GU_RR_Designator_GU_DropAnimal_Clear_Label>Clear mount drop spot</GU_RR_Designator_GU_DropAnimal_Clear_Label> <!--Should be short-->
 <GU_RR_Designator_GU_DropAnimal_Clear_Description>Clears mount drop spots. Drag to delete multiple drop spots at once.</GU_RR_Designator_GU_DropAnimal_Clear_Description>
 <GU_RR_Designator_GU_NoMount_Clear_Label>Clear forbid riding area</GU_RR_Designator_GU_NoMount_Clear_Label> <!--Should be short-->
-<GU_RR_Designator_GU_NoMount_Clear_Description>Clears the riding forbidden area.</GU_RR_Designator_GU_NoMount_Clear_Description>
+<GU_RR_Designator_GU_NoMount_Clear_Description>Clears the forbid riding area.</GU_RR_Designator_GU_NoMount_Clear_Description>
 <GU_RR_Designator_GU_NoMount_Expand_Label>Expand forbid riding area </GU_RR_Designator_GU_NoMount_Expand_Label>
-<GU_RR_Designator_GU_NoMount_Expand_Description>Before trying to enter a "riding forbidden" area on an animal, pawns will drop off their mount at the nearest mount drop spot. This will only happen when their destination is inside the forbidden area. IMPORTANT NOTE: This area only has effect when mount drop spots have been designated!</GU_RR_Designator_GU_NoMount_Expand_Description>
+<GU_RR_Designator_GU_NoMount_Expand_Description>Before trying to enter a "forbid riding" area on an animal, pawns will drop off their mount at the nearest mount drop spot. This will only happen when their destination is inside the forbidden area. IMPORTANT NOTE: This area only has effect when mount drop spots have been designated!</GU_RR_Designator_GU_NoMount_Expand_Description>
 </LanguageData>

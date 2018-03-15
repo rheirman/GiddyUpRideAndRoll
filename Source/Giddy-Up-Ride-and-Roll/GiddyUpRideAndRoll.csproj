@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
+    <Compile Include="Harmony\FloatMenuMakerMap.cs" />
     <Compile Include="Harmony\JobDriver_Mount.cs" />
     <Compile Include="Harmony\Pawn_PathFollower.cs" />
     <Compile Include="Harmony\JobDriver.cs" />
