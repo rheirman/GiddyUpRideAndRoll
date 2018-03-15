@@ -11,4 +11,7 @@
 <GU_RR_Designator_GU_NoMount_Clear_Description>Clears the forbid riding area.</GU_RR_Designator_GU_NoMount_Clear_Description>
 <GU_RR_Designator_GU_NoMount_Expand_Label>Expand forbid riding area </GU_RR_Designator_GU_NoMount_Expand_Label>
 <GU_RR_Designator_GU_NoMount_Expand_Description>Before trying to enter a "forbid riding" area on an animal, pawns will drop off their mount at the nearest mount drop spot. This will only happen when their destination is inside the forbidden area. IMPORTANT NOTE: This area only has effect when mount drop spots have been designated!</GU_RR_Designator_GU_NoMount_Expand_Description>
+<GU_RR_NoDropAnimal_Label>No mount drop spots (Giddy-up!)</GU_RR_NoDropAnimal_Label>
+<GU_RR_NoDropAnimal_Description>A forbid riding area has been designated but no mount drop spots exist. This way the forbid riding area has no effect. Check out mount drop spots in the Zone/Area menu.</GU_RR_NoDropAnimal_Description>
+<GU_RR_NotReachable_DropAnimal_Message>Colonist could not reach Giddy-up! Drop off point. Make sure all drop off points are reachable</GU_RR_NotReachable_DropAnimal_Message>
 </LanguageData>

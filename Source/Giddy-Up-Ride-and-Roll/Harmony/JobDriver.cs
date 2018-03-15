@@ -63,7 +63,7 @@ namespace GiddyUpRideAndRoll.Harmony
                             }
                             else
                             {
-                                Messages.Message("Pawn couldn't reach Giddy-up! Drop off point. Make sure all drop off points are reachable", new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
+                                Messages.Message("GU_RR_NotReachable_DropAnimal_Message".Translate(), new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
                             }
                         }
                         checkedToil = true;

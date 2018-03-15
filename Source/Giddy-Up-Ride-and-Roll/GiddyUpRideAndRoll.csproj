@@ -58,10 +58,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alerts\Alert_NoDropAnimal.cs" />
     <Compile Include="Base.cs" />
     <Compile Include="Harmony\FloatMenuMakerMap.cs" />
     <Compile Include="Harmony\JobDriver_Mount.cs" />
-    <Compile Include="Harmony\Pawn_PathFollower.cs" />
     <Compile Include="Harmony\JobDriver.cs" />
     <Compile Include="Harmony\JobDriver_Mounted.cs" />
     <Compile Include="Harmony\Pawn_Jobtracker.cs" />
