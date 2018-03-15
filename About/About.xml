@@ -3,7 +3,11 @@
 	<name>Giddy-up! Ride and Roll</name>
 	<author>Roolo</author>
 	<targetVersion>0.18.0</targetVersion>
-	<description>Giddy-up! Let colonists Ride to their destination and Roll there. 
+	<description>Giddy-up! Let colonists Ride to their destination and Roll. 
+
+&lt;color=orange&gt;&lt;b&gt;Dependencies &lt;/b&gt;&lt;/color&gt;
+This mod depends on Hugslib and Giddy-up! Core. Load order should be: Hugslib -> Giddy-up! Core -> Giddy-up! Ride and Roll. Can safely be added to existing saves.
+	
 Banastra: "Hey Stein, can you go mine some steel? We're running out."
 Stein: "But the only deposit is on the other side of the map! Why don't you do it?"
 Banastra: "Well, I'm incapable of mining, you know that. Why don't you just take an animal and Ride and Roll?"
