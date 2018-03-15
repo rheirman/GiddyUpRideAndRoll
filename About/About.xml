@@ -3,6 +3,14 @@
 	<name>Giddy-up! Ride and Roll</name>
 	<author>Roolo</author>
 	<targetVersion>0.18.0</targetVersion>
-	<description>TODO
+	<description>Giddy-up! Let colonists Ride to their destination and Roll there. 
+Banastra: "Hey Stein, can you go mine some steel? We're running out."
+Stein: "But the only deposit is on the other side of the map! Why don't you do it?"
+Banastra: "Well, I'm incapable of mining, you know that. Why don't you just take an animal and Ride and Roll?"
+Stein: That's a thing now? 
+
+Yes it is. With Giddy-up! Ride and Roll, you'll save your colonists the pain of walking everywhere, as it allows them to use mounts whenever it makes sense.
+When a colonist wants to go to a destination, he will walk to an animal, mount it, and ride to the destination, given that it would take him there faster (this all happens automatically). 
+Depending on the job the pawn wants to do on the destination, the pawn will either dismount before doing the job, or stay mounted. 
 	</description>	
 </ModMetaData>

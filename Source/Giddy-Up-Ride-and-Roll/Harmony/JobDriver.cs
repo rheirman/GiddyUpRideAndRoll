@@ -63,7 +63,7 @@ namespace GiddyUpRideAndRoll.Harmony
                             }
                             else
                             {
-                                Messages.Message("GU_RR_NotReachable_DropAnimal_Message".Translate(), new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
+                                Messages.Message("GU_RR_NotReachableDropAnimal_Message".Translate(), new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
                             }
                         }
                         checkedToil = true;

@@ -99,7 +99,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
                 if (bestChoiceAnimal != null)
                 {
-                    __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, targetB, pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
+                    __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, targetB, ref pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
                 }
 
                 //Log.Message("timeNeededOriginal: " + timeNeededOriginal);
@@ -162,47 +162,21 @@ namespace GiddyUpRideAndRoll.Harmony
             return closestAnimal;
         }
 
-        private static ThinkResult InsertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, LocalTargetInfo secondTarget, ExtendedPawnData pawnData, ExtendedPawnData animalData, Pawn_JobTracker __instance, ThinkResult __result)
+        private static ThinkResult InsertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, LocalTargetInfo secondTarget, ref ExtendedPawnData pawnData, ExtendedPawnData animalData, Pawn_JobTracker __instance, ThinkResult __result)
         {
             Job dismountJob = new Job(GUC_JobDefOf.Dismount);
-            Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal, target, secondTarget);
-            Job rideToJob = new Job(GU_RR_JobDefOf.RideToJob, closestAnimal, target, secondTarget);
+            Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
+            Job rideToJob = new Job(GU_RR_JobDefOf.RideToJob, closestAnimal);
             Job oldJob = __result.Job;
 
-            mountJob.count = 1;
-            rideToJob.count = 1;
 
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             //__instance.jobQueue.EnqueueFirst(dismountJob);
             if (pawn.CanReserve(target) && pawn.CanReserve(closestAnimal))
             {
-                if(oldJob.targetC != null)
-                {
-                    pawnData.extraJobTarget = oldJob.targetC;
-                }
-                if (target.Thing is Building_Bed)
-                {
-                    Building_Bed bed = (Building_Bed)target.Thing;
-
-                    mountJob.count = bed.SleepingSlotsCount;
-                    rideToJob.count = bed.SleepingSlotsCount;
-                }
-                if (oldJob.def.joyMaxParticipants > 1)
-                {
-                    mountJob.count = oldJob.def.joyMaxParticipants;
-                    rideToJob.count = oldJob.def.joyMaxParticipants;
-                }
-                if (!oldJob.targetQueueA.NullOrEmpty())
-                {
-                    mountJob.targetQueueA = oldJob.targetQueueA;
-                    rideToJob.targetQueueA = oldJob.targetQueueA;
-                }
-                if (!oldJob.targetQueueB.NullOrEmpty())
-                {
-                    mountJob.targetQueueB = oldJob.targetQueueB;
-                    rideToJob.targetQueueB = oldJob.targetQueueB;
-                }
-
+                Log.Message("setting targetJob for " + pawn.Name);
+                ExtendedPawnData pawnDataTest = store.GetExtendedDataFor(pawn);
+                pawnDataTest.targetJob = oldJob;
                 if (pawnData.mount != null)
                 {
                     __instance.jobQueue.EnqueueFirst(oldJob);
