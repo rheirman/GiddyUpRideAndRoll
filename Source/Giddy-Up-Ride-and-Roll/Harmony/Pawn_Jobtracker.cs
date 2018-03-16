@@ -64,6 +64,11 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
 
+            if(pawn.mindState != null && pawn.mindState.duty != null && (pawn.mindState.duty.def == DutyDefOf.TravelOrWait || pawn.mindState.duty.def == DutyDefOf.TravelOrLeave))
+            {
+                return;
+            }
+         
             Pawn bestChoiceAnimal = null;
 
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawn.Position, target.Cell);
