@@ -26,7 +26,6 @@ namespace GiddyUpRideAndRoll.Harmony
             ExtendedPawnData pawnData = store.GetExtendedDataFor(__instance.pawn);
             if (pawnData.targetJob == null)
             {
-                Log.Message("pawnData.targetJob was null for " + __instance.pawn.Name);
                 __result = true;
                 return;
             }

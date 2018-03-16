@@ -12,11 +12,12 @@ using Verse.AI;
 
 namespace GiddyUpRideAndRoll.Harmony
 {
+
     [HarmonyPatch(typeof(JobDriver), "SetupToils")]
     class JobDriver_SetupToils
     {
-        static void Postfix(ref JobDriver __instance)
-        {
+        static void Postfix(JobDriver __instance)
+        {            
             if (__instance.pawn.Map == null)
             {
                 return;
@@ -72,7 +73,6 @@ namespace GiddyUpRideAndRoll.Harmony
                             toil.actor.pather.StartPath(originalLoc, PathEndMode.ClosestTouch);
                             if (pawnData.owning != null)
                             {
-                                Log.Message("reached parking spot. unsetting owner/ownedBy");
                                 ExtendedPawnData animalData = store.GetExtendedDataFor(pawnData.owning);
                                 animalData.ownedBy = null;
                                 pawnData.owning = null;
@@ -86,9 +86,12 @@ namespace GiddyUpRideAndRoll.Harmony
         }
 
     }
+            
 
 
 
 
-    
+
+
+
 }

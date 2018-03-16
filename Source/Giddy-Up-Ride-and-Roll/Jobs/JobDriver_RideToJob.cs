@@ -27,12 +27,9 @@ namespace GiddyUpRideAndRoll.Jobs
             ExtendedPawnData pawnData = store.GetExtendedDataFor(this.pawn);
             if (pawnData.targetJob == null)
             {
-                Log.Message("pawnData.targetJob was null for " + this.pawn.Name);
                 return true;
             }
-            Log.Message("JobDriver_RideToJob calling ReserveEveryThingOfJob, pawn" + this.pawn);
             result = ReserveUtility.ReserveEveryThingOfJob(pawnData.targetJob, this);
-            Log.Message("JobDriver_RideToJob calling ReserveEveryThingOfJob, result: " + result);
             this.job.targetB = pawnData.targetJob.targetA;
             pawnData.targetJob = null;
             return result;

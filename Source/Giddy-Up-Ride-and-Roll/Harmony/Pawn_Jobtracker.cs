@@ -174,7 +174,6 @@ namespace GiddyUpRideAndRoll.Harmony
             //__instance.jobQueue.EnqueueFirst(dismountJob);
             if (pawn.CanReserve(target) && pawn.CanReserve(closestAnimal))
             {
-                Log.Message("setting targetJob for " + pawn.Name);
                 ExtendedPawnData pawnDataTest = store.GetExtendedDataFor(pawn);
                 pawnDataTest.targetJob = oldJob;
                 if (pawnData.mount != null)
