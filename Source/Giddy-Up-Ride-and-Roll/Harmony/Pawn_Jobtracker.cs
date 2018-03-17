@@ -37,6 +37,11 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
+            if (pawn.InMentalState)
+            {
+                return;
+            }
+
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
 
 
@@ -83,8 +88,6 @@ namespace GiddyUpRideAndRoll.Harmony
                     firstToSecondTargetDistance = DistanceUtility.QuickDistance(target.Cell, targetB.Cell);
                 }
             }
-            // Log.Message("pawnTargetDistance: " + pawnTargetDistance);
-            //Log.Message("pawnTargetDistanceB: " + firstToSecondTargetDistance);
 
             float totalDistance = pawnTargetDistance + firstToSecondTargetDistance;
             bool walkToSecondTarget = false;
@@ -169,18 +172,21 @@ namespace GiddyUpRideAndRoll.Harmony
 
         private static ThinkResult InsertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, LocalTargetInfo secondTarget, ref ExtendedPawnData pawnData, ExtendedPawnData animalData, Pawn_JobTracker __instance, ThinkResult __result)
         {
-            Job dismountJob = new Job(GUC_JobDefOf.Dismount);
-            Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
-            Job rideToJob = new Job(GU_RR_JobDefOf.RideToJob, closestAnimal);
-            Job oldJob = __result.Job;
+
 
 
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             //__instance.jobQueue.EnqueueFirst(dismountJob);
             if (pawn.CanReserve(target) && pawn.CanReserve(closestAnimal))
             {
+
+                Job oldJob = __result.Job;
+
                 ExtendedPawnData pawnDataTest = store.GetExtendedDataFor(pawn);
                 pawnDataTest.targetJob = oldJob;
+                Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
+                Job rideToJob = new Job(GU_RR_JobDefOf.RideToJob, closestAnimal, target);
+
                 if (pawnData.mount != null)
                 {
                     __instance.jobQueue.EnqueueFirst(oldJob);
@@ -243,7 +249,7 @@ namespace GiddyUpRideAndRoll.Harmony
             }
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, target.Cell);
-            if(pawnTargetDistance > 7 || __result.Job.def == JobDefOf.LayDown)
+            if(pawnTargetDistance > 7 || __result.Job.def == JobDefOf.LayDown || pawn.InMentalState || pawn.Dead || pawn.Downed)
             {
                 if(pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)
                 {

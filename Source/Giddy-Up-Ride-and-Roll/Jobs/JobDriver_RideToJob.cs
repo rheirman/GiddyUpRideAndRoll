@@ -30,7 +30,6 @@ namespace GiddyUpRideAndRoll.Jobs
                 return true;
             }
             result = ReserveUtility.ReserveEveryThingOfJob(pawnData.targetJob, this);
-            this.job.targetB = pawnData.targetJob.targetA;
             pawnData.targetJob = null;
             return result;
         }

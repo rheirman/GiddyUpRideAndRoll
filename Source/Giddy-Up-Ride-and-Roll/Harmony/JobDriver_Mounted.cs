@@ -38,7 +38,7 @@ namespace GiddyUpRideAndRoll.Harmony
             ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(__instance.pawn);
             if(!__instance.Rider.Drafted && __instance.pawn.Faction == Faction.OfPlayer)
             {
-                if (pawnData.ownedBy != null)
+                if (pawnData.ownedBy != null && !__instance.interrupted)
                 {
                     //TODO: this job gets cancelled now, should make it more dominant.
                     __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 10000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.

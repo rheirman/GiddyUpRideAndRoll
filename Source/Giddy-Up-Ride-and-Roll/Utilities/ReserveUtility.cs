@@ -28,7 +28,6 @@ namespace GiddyUpRideAndRoll.Utilities
             if (!targetJob.targetQueueA.NullOrEmpty())
             {
                 jobDriver.pawn.ReserveAsManyAsPossible(targetJob.targetQueueA, jobDriver.job, 1, -1, null);
-
             }
             if (!targetJob.targetQueueB.NullOrEmpty())
             {
@@ -41,11 +40,11 @@ namespace GiddyUpRideAndRoll.Utilities
             }
             if (targetJob.targetA != null)
             {
-                result &= jobDriver.pawn.Reserve(targetJob.targetA, jobDriver.job, targetACount, -1, null);
+                result &= jobDriver.pawn.Reserve(targetJob.targetA, jobDriver.job, targetACount, targetACount > 1 ? 0 : - 1, null);
             }
             if (targetJob.targetB != null)
             {
-                result &= jobDriver.pawn.Reserve(targetJob.targetB, jobDriver.job, targetBCount, -1, null);
+                result &= jobDriver.pawn.Reserve(targetJob.targetB, jobDriver.job, targetBCount, targetBCount > 1 ? 0 : -1, null);
             }
             if (targetJob.targetC != null)
             {
