@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <GU_RR_MinAutoMountDistance_Title>最小考虑骑乘距离</GU_RR_MinAutoMountDistance_Title>
+  <GU_RR_MinAutoMountDistance_Description>人们会考虑骑乘去工作的最小距离</GU_RR_MinAutoMountDistance_Description>
+  <GU_RR_Designator_GU_DropAnimal_Expand_Label>释放点</GU_RR_Designator_GU_DropAnimal_Expand_Label>  <!--Should be short-->
+  <GU_RR_Designator_GU_DropAnimal_Expand_Description>当有人试图骑着动物进入禁止骑乘的区域时，他会到最近的释放点从动物身上下来。</GU_RR_Designator_GU_DropAnimal_Expand_Description>
+  <GU_RR_Designator_GU_DropAnimal_Clear_Label>清除释放点</GU_RR_Designator_GU_DropAnimal_Clear_Label>  <!--Should be short-->
+  <GU_RR_Designator_GU_DropAnimal_Clear_Description>清除掉骑乘点，可以通过拖动鼠标一次清除多个。</GU_RR_Designator_GU_DropAnimal_Clear_Description>
+  <GU_RR_Designator_GU_NoMount_Clear_Label>删除禁止乘骑区</GU_RR_Designator_GU_NoMount_Clear_Label>  <!--Should be short-->
+  <GU_RR_Designator_GU_NoMount_Clear_Description>清楚掉禁止称乘骑的区域.</GU_RR_Designator_GU_NoMount_Clear_Description>
+  <GU_RR_Designator_GU_NoMount_Expand_Label>禁止骑乘区 </GU_RR_Designator_GU_NoMount_Expand_Label>
+  <GU_RR_Designator_GU_NoMount_Expand_Description>当人们骑着动物试图进入这片区域时，会在最近的释放点从动物身上下来，而不是骑着动物进入这片区域。警告：这仅在设置了释放点后有效</GU_RR_Designator_GU_NoMount_Expand_Description>
+  <GU_RR_NoDropAnimal_Label>没有可用释放点</GU_RR_NoDropAnimal_Label>
+  <GU_RR_NoDropAnimal_Description>禁止骑乘区域已被指定，但不存在释放点。这样禁止骑乘的区域没有效果。请设置一个释放点。</GU_RR_NoDropAnimal_Description>
+  <GU_RR_NotReachable_DropAnimal_Message>殖民者无法到达释放点。确保释放点都是可到达的。</GU_RR_NotReachable_DropAnimal_Message>
+
+</LanguageData>
