@@ -42,7 +42,20 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
 
-            LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
+            LocalTargetInfo target = null;
+            LocalTargetInfo targetB = null;
+
+            if (__result.Job.def != JobDefOf.TendPatient)
+            {
+                target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
+                targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
+            }
+            else //For tending the first target is B, and the second A.
+            {
+                target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
+                targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
+            }
+
 
 
             if (!target.IsValid)
@@ -74,15 +87,13 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
          
-            Pawn bestChoiceAnimal = null;
+            Pawn bestChoiceAnimal = pawnData.mount;
 
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawn.Position, target.Cell);
             //Log.Message("pawnTargetDistance: " + pawnTargetDistance);
-            LocalTargetInfo targetB = null;
             float firstToSecondTargetDistance = 0;
             if (__result.Job.def == JobDefOf.HaulToCell || __result.Job.def == JobDefOf.HaulToContainer)
             {
-                targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
                 if (targetB.IsValid)
                 {
                     firstToSecondTargetDistance = DistanceUtility.QuickDistance(target.Cell, targetB.Cell);
@@ -103,7 +114,9 @@ namespace GiddyUpRideAndRoll.Harmony
 
             if (totalDistance > Base.minAutoMountDistance)
             {
-                bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, walkToSecondTarget, store);
+                if(pawnData.mount != null){
+                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, walkToSecondTarget, store);
+                }
 
                 if (bestChoiceAnimal != null)
                 {
@@ -172,9 +185,6 @@ namespace GiddyUpRideAndRoll.Harmony
 
         private static ThinkResult InsertMountingJobs(Pawn pawn, Pawn closestAnimal, LocalTargetInfo target, LocalTargetInfo secondTarget, ref ExtendedPawnData pawnData, ExtendedPawnData animalData, Pawn_JobTracker __instance, ThinkResult __result)
         {
-
-
-
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             //__instance.jobQueue.EnqueueFirst(dismountJob);
             if (pawn.CanReserve(target) && pawn.CanReserve(closestAnimal))
