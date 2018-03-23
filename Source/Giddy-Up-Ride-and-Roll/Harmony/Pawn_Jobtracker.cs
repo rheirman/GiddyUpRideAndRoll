@@ -45,15 +45,15 @@ namespace GiddyUpRideAndRoll.Harmony
             LocalTargetInfo target = null;
             LocalTargetInfo targetB = null;
 
-            if (__result.Job.def != JobDefOf.TendPatient)
-            {
-                target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
-                targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
-            }
-            else //For tending the first target is B, and the second A.
+            if (__result.Job.def == JobDefOf.TendPatient)
             {
                 target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
                 targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
+            }
+            else //For tending the first target is B, and the second A.
+            {
+                target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
+                targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
             }
 
 
@@ -86,8 +86,9 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-         
-            Pawn bestChoiceAnimal = pawnData.mount;
+
+            //Pawn bestChoiceAnimal = pawnData.mount;
+            Pawn bestChoiceAnimal = null;
 
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawn.Position, target.Cell);
             //Log.Message("pawnTargetDistance: " + pawnTargetDistance);
@@ -114,9 +115,9 @@ namespace GiddyUpRideAndRoll.Harmony
 
             if (totalDistance > Base.minAutoMountDistance)
             {
-                if(pawnData.mount != null){
+                //if(pawnData.mount != null){
                     bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, walkToSecondTarget, store);
-                }
+                //}
 
                 if (bestChoiceAnimal != null)
                 {
@@ -253,7 +254,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
 
-            if(pawnData.owning == null || pawnData.mount != null)
+            if(pawnData.owning == null || pawnData.owning.Dead || pawnData.mount != null)
             {
                 return;
             }
