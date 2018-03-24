@@ -254,21 +254,26 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
 
-            if(pawnData.owning == null || pawnData.owning.Dead || pawnData.mount != null)
+            if (pawnData.owning == null || !pawnData.owning.Spawned || pawnData.owning.Downed || pawnData.owning.Dead || pawnData.mount != null)
             {
                 return;
             }
+
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, target.Cell);
-            if(pawnTargetDistance > 10 || __result.Job.def == JobDefOf.LayDown || pawn.InMentalState || pawn.Dead || pawn.Downed)
+
+            if (pawnTargetDistance > 10 || __result.Job.def == JobDefOf.LayDown || pawn.InMentalState || pawn.Dead || pawn.Downed)
             {
-                if(pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)
+
+                if (pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)
                 {
+
                     pawnData.owning.jobs.EndCurrentJob(JobCondition.InterruptForced);
                 }
                 ExtendedPawnData animalData = store.GetExtendedDataFor(pawnData.owning);
                 pawnData.owning = null;
                 animalData.ownedBy = null;
+
             }
 
         }
