@@ -13,6 +13,8 @@ using System.Text;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
+
 namespace GiddyUpRideAndRoll.Harmony
 {
     [HarmonyPatch(typeof(Pawn_JobTracker), "DetermineNextJob")]
@@ -158,6 +160,15 @@ namespace GiddyUpRideAndRoll.Harmony
                 {
                     continue;
                 }
+                float distanceFromAnimal = DistanceUtility.QuickDistance(animal.Position, target.Cell);
+                if (!walkToSecondTarget)
+                {
+                    distanceFromAnimal += firstToSecondTargetDistance;
+                }
+                if(distanceFromAnimal < Base.minAutoMountDistanceFromAnimal)
+                {
+                    continue;
+                }
                 ExtendedPawnData animalData = store.GetExtendedDataFor(animal);
                 if(animalData.ownedBy != null)
                 {
@@ -174,11 +185,13 @@ namespace GiddyUpRideAndRoll.Harmony
                         continue;
                     }
                 }
+
                 float timeNeeded = CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, walkToSecondTarget, animal);
 
                 if (timeNeeded < timeNeededMin)
                 {
                     closestAnimal = animal;
+                    timeNeededMin = timeNeeded;
                 }
             }
             return closestAnimal;
@@ -216,7 +229,15 @@ namespace GiddyUpRideAndRoll.Harmony
         private static bool AnimalBusy(Pawn animal)
         {
             bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
-            bool formingCaravan = animal.mindState != null && animal.mindState.duty != null && (animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Wait || animal.mindState.duty.def == DutyDefOf.PrepareCaravan_Pause || animal.mindState.duty.def == DutyDefOf.PrepareCaravan_GatherPawns);
+
+            bool formingCaravan = false;
+            if(animal.GetLord() != null)
+            {
+                if(animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan)
+                {
+                    formingCaravan = true;
+                }
+            }
             bool shouldNotInterrupt = animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted);
             return animalInBadState || shouldNotInterrupt || formingCaravan;
         }
@@ -262,7 +283,7 @@ namespace GiddyUpRideAndRoll.Harmony
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, target.Cell);
 
-            if (pawnTargetDistance > 10 || __result.Job.def == JobDefOf.LayDown || pawn.InMentalState || pawn.Dead || pawn.Downed)
+            if (pawnTargetDistance > 10 || __result.Job.def == JobDefOf.LayDown || __result.Job.def == JobDefOf.Research || pawn.InMentalState || pawn.Dead || pawn.Downed)
             {
 
                 if (pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)

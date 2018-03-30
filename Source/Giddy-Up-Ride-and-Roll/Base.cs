@@ -20,6 +20,7 @@ namespace GiddyUpRideAndRoll
         internal const string NOMOUNT_LABEL = "Gu_Area_NoMount";
         internal const string DROPANIMAL_LABEL = "Gu_Area_DropMount";
         internal static SettingHandle<int> minAutoMountDistance;
+        internal static SettingHandle<int> minAutoMountDistanceFromAnimal;
 
         public override string ModIdentifier
         {
@@ -32,6 +33,7 @@ namespace GiddyUpRideAndRoll
         public override void DefsLoaded()
         {
             minAutoMountDistance = Settings.GetHandle<int>("minAutoMountDistance", "GU_RR_MinAutoMountDistance_Title".Translate(), "GU_RR_MinAutoMountDistance_Description".Translate(), 16, Validators.IntRangeValidator(0, 500));
+            minAutoMountDistanceFromAnimal = Settings.GetHandle<int>("minAutoMountDistanceFromAnimal", "GU_RR_MinAutoMountDistanceFromAnimal_Title".Translate(), "GU_RR_MinAutoMountDistanceFromAnimal_Description".Translate(), 12, Validators.IntRangeValidator(0, 500));
 
             PawnTableDef animalsTable = PawnTableDefOf.Animals;
             foreach (PawnColumnDef def in from td in DefDatabase<PawnColumnDef>.AllDefsListForReading

@@ -2,7 +2,9 @@
 <LanguageData>
 
 <GU_RR_MinAutoMountDistance_Title>Min. distance for auto mounting </GU_RR_MinAutoMountDistance_Title>
-<GU_RR_MinAutoMountDistance_Description>Minimum distance a pawn will consider using a mount to get to its destination.</GU_RR_MinAutoMountDistance_Description>
+<GU_RR_MinAutoMountDistance_Description>Minimum distance from which a pawn will consider using a mount to get to its destination. If the job can be done mounted, the distance to the second target of the job is also taken into account</GU_RR_MinAutoMountDistance_Description>
+<GU_RR_MinAutoMountDistanceFromAnimal_Title>Min. distance for auto mounting from animal</GU_RR_MinAutoMountDistanceFromAnimal_Title>
+<GU_RR_MinAutoMountDistanceFromAnimal_Description>Minimum distance from an animal a pawn is considering, to the job. If the job can be done mounted, the distance to the second target of the job is also taken into account</GU_RR_MinAutoMountDistanceFromAnimal_Description>
 <GU_RR_Designator_GU_DropAnimal_Expand_Label>Place mount drop spot</GU_RR_Designator_GU_DropAnimal_Expand_Label> <!--Should be short-->
 <GU_RR_Designator_GU_DropAnimal_Expand_Description>When trying to enter a "forbid riding" area while pawns are mounted, they will drop off the the animal they are riding at the nearest colony drop spot.</GU_RR_Designator_GU_DropAnimal_Expand_Description>
 <GU_RR_Designator_GU_DropAnimal_Clear_Label>Clear mount drop spot</GU_RR_Designator_GU_DropAnimal_Clear_Label> <!--Should be short-->
