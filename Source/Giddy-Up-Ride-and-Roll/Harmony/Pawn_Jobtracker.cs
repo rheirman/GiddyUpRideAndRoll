@@ -229,6 +229,16 @@ namespace GiddyUpRideAndRoll.Harmony
         private static bool AnimalBusy(Pawn animal)
         {
             bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
+            bool animalWounded = animal.health.summaryHealth.SummaryHealthPercent < 100;
+            if (animalWounded)
+            {
+                Log.Message("animal wounded, animal: " + animal.Name);
+            }
+            bool animalNeedsBreak = (animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired);
+            if (animalNeedsBreak)
+            {
+                Log.Message("animal needs break, animal: " + animal.Name);
+            }
 
             bool formingCaravan = false;
             if(animal.GetLord() != null)
@@ -239,7 +249,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 }
             }
             bool shouldNotInterrupt = animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted);
-            return animalInBadState || shouldNotInterrupt || formingCaravan;
+            return animalWounded || animalNeedsBreak || animalInBadState || shouldNotInterrupt || formingCaravan;
         }
 
         //uses abstract unit of time. Real time values aren't needed, only relative values. 
