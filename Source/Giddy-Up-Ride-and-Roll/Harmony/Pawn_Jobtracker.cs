@@ -47,12 +47,17 @@ namespace GiddyUpRideAndRoll.Harmony
             LocalTargetInfo target = null;
             LocalTargetInfo targetB = null;
 
-            if (__result.Job.def == JobDefOf.TendPatient)
+            //For some jobs the first target is B, and the second A.
+            if (__result.Job.def == JobDefOf.TendPatient || __result.Job.def == JobDefOf.Refuel)
             {
                 target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
                 targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             }
-            else //For tending the first target is B, and the second A.
+            else if (__result.Job.def == JobDefOf.DoBill && !__result.Job.targetQueueB.NullOrEmpty()) {
+                target = __result.Job.targetQueueB[0];
+                targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
+            }
+            else
             {
                 target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
                 targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
@@ -229,10 +234,11 @@ namespace GiddyUpRideAndRoll.Harmony
         private static bool AnimalBusy(Pawn animal)
         {
             bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
-            bool animalWounded = animal.health.summaryHealth.SummaryHealthPercent < 100;
+            bool animalWounded = animal.health.summaryHealth.SummaryHealthPercent < 1;
             if (animalWounded)
             {
                 Log.Message("animal wounded, animal: " + animal.Name);
+                Log.Message("animal health percentage: " + animal.health.summaryHealth.SummaryHealthPercent);
             }
             bool animalNeedsBreak = (animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired);
             if (animalNeedsBreak)
