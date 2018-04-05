@@ -149,7 +149,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
             //If owning an animal, prefer this animal if it still gets you to the goal quicker than walking. 
             //This'll make sure pawns prefer the animals they were already riding previously.
-            if (pawnData.owning != null && !AnimalBusy(pawnData.owning) && pawn.CanReserve(pawnData.owning))
+            if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalBusy(pawnData.owning) && pawn.CanReserve(pawnData.owning))
             {
                 if (CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, walkToSecondTarget, pawnData.owning) < timeNeededMin)
                 {
@@ -158,7 +158,7 @@ namespace GiddyUpRideAndRoll.Harmony
             }
             //Otherwise search the animal on the map that gets you to the goal the quickest
             foreach (Pawn animal in from p in pawn.Map.mapPawns.AllPawnsSpawned
-                                    where p.RaceProps.Animal && IsMountableUtility.isMountable(p) && p.CurJob.def != GUC_JobDefOf.Mounted
+                                    where p.RaceProps.Animal && IsMountableUtility.isMountable(p) && p.CurJob != null && p.CurJob.def != GUC_JobDefOf.Mounted
                                     select p)
             {
                 if (AnimalBusy(animal) || !pawn.CanReserve(animal))
@@ -235,16 +235,7 @@ namespace GiddyUpRideAndRoll.Harmony
         {
             bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
             bool animalWounded = animal.health.summaryHealth.SummaryHealthPercent < 1;
-            if (animalWounded)
-            {
-                Log.Message("animal wounded, animal: " + animal.Name);
-                Log.Message("animal health percentage: " + animal.health.summaryHealth.SummaryHealthPercent);
-            }
             bool animalNeedsBreak = (animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired);
-            if (animalNeedsBreak)
-            {
-                Log.Message("animal needs break, animal: " + animal.Name);
-            }
 
             bool formingCaravan = false;
             if(animal.GetLord() != null)
