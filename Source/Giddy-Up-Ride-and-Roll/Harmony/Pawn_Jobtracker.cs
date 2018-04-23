@@ -115,7 +115,7 @@ namespace GiddyUpRideAndRoll.Harmony
             if (totalDistance > Base.minAutoMountDistance)
             {
                 if(pawnData.mount == null){
-                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, store);
+                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, targetB, pawnTargetDistance, firstToSecondTargetDistance, store);
                 }
 
                 if (bestChoiceAnimal != null)
@@ -131,7 +131,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
 
         //Gets animal that'll get the pawn to the target the quickest. Returns null if no animal is found or if walking is faster. 
-        static Pawn GetBestChoiceAnimal(Pawn pawn, LocalTargetInfo target, float pawnTargetDistance, float firstToSecondTargetDistance, ExtendedDataStorage store)
+        static Pawn GetBestChoiceAnimal(Pawn pawn, LocalTargetInfo target, LocalTargetInfo secondTarget, float pawnTargetDistance, float firstToSecondTargetDistance, ExtendedDataStorage store)
         {
 
             //float minDistance = float.MaxValue;
@@ -158,7 +158,7 @@ namespace GiddyUpRideAndRoll.Harmony
             //This'll make sure pawns prefer the animals they were already riding previously.
             if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalNotAvailable(pawnData.owning) && pawn.CanReserve(pawnData.owning))
             {
-                if (CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, pawnData.owning, firstTargetNoMount, secondTargetNoMount, areaDropAnimal) < timeNeededMin)
+                if (CalculateTimeNeeded(pawn, ref target, secondTarget, firstToSecondTargetDistance, pawnData.owning, firstTargetNoMount, secondTargetNoMount, areaDropAnimal) < timeNeededMin)
                 {
                     return pawnData.owning;
                 }
@@ -198,7 +198,7 @@ namespace GiddyUpRideAndRoll.Harmony
                     }
                 }
 
-                float timeNeeded = CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, animal, firstTargetNoMount, secondTargetNoMount, areaDropAnimal);
+                float timeNeeded = CalculateTimeNeeded(pawn, ref target, secondTarget, firstToSecondTargetDistance, animal, firstTargetNoMount, secondTargetNoMount, areaDropAnimal);
 
                 if (timeNeeded < timeNeededMin)
                 {
@@ -271,13 +271,34 @@ namespace GiddyUpRideAndRoll.Harmony
         }
 
         //uses abstract unit of time. Real time values aren't needed, only relative values. 
-        private static float CalculateTimeNeeded(Pawn pawn, ref LocalTargetInfo target, float firstToSecondTargetDistance, Pawn animal, bool firstTargetNoMount, bool secondTargetNoMount, Area_GU areaDropAnimal)
+        private static float CalculateTimeNeeded(Pawn pawn, ref LocalTargetInfo target, LocalTargetInfo secondTarget, float firstToSecondTargetDistance, Pawn animal, bool firstTargetNoMount, bool secondTargetNoMount, Area_GU areaDropAnimal)
         {
-            float pawnAnimalDistance = DistanceUtility.QuickDistance(pawn.Position, animal.Position);
-            float animalTargetDistance = DistanceUtility.QuickDistance(animal.Position, target.Cell);
+            
+
+            float walkDistance = DistanceUtility.QuickDistance(pawn.Position, animal.Position);
+            float rideDistance = DistanceUtility.QuickDistance(animal.Position, target.Cell);
+            if (firstTargetNoMount)
+            {
+                rideDistance = 0;
+                IntVec3 parkLoc = DistanceUtility.getClosestAreaLoc(animal.Position, areaDropAnimal);
+                rideDistance += DistanceUtility.QuickDistance(animal.Position, parkLoc);
+                walkDistance += DistanceUtility.QuickDistance(parkLoc, target.Cell);
+                walkDistance += firstToSecondTargetDistance;
+            }
+            else if (secondTargetNoMount && secondTarget != null && secondTarget.IsValid)
+            {
+                IntVec3 parkLoc = DistanceUtility.getClosestAreaLoc(target.Cell, areaDropAnimal);
+                rideDistance += DistanceUtility.QuickDistance(target.Cell, parkLoc);
+                walkDistance += DistanceUtility.QuickDistance(parkLoc, secondTarget.Cell);
+            }
+            else
+            {
+                rideDistance += firstToSecondTargetDistance;
+            }
+
             int adjustedTicksPerMove = TicksPerMoveUtility.adjustedTicksPerMove(pawn, animal, true);
-            float timeNeededAtoB = firstTargetNoMount ? firstToSecondTargetDistance * pawn.TicksPerMoveDiagonal : firstToSecondTargetDistance * adjustedTicksPerMove;
-            float timeNeeded = pawnAnimalDistance * pawn.TicksPerMoveDiagonal + animalTargetDistance  * adjustedTicksPerMove + timeNeededAtoB;
+
+            float timeNeeded = walkDistance * pawn.TicksPerMoveDiagonal + rideDistance * adjustedTicksPerMove;
             return timeNeeded;
         }
 
