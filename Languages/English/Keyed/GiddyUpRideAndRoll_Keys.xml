@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-
+<GU_RR_NoMountedHunting_Title>No mounted hunting</GU_RR_NoMountedHunting_Title>
+<GU_RR_NoMountedHunting_Description>Forbid mounted hunting, when using Combat Extended it is recommended to turn this on, as otherwise animals may get harmed while playing the game</GU_RR_NoMountedHunting_Description>
 <GU_RR_MinAutoMountDistance_Title>Min. distance for auto mounting </GU_RR_MinAutoMountDistance_Title>
 <GU_RR_MinAutoMountDistance_Description>Minimum distance from which a pawn will consider using a mount to get to its destination. If the job can be done mounted, the distance to the second target of the job is also taken into account</GU_RR_MinAutoMountDistance_Description>
 <GU_RR_MinAutoMountDistanceFromAnimal_Title>Min. distance for auto mounting from animal</GU_RR_MinAutoMountDistanceFromAnimal_Title>
