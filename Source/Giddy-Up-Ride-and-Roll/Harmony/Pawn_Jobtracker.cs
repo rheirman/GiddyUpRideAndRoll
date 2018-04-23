@@ -109,21 +109,13 @@ namespace GiddyUpRideAndRoll.Harmony
             }
 
             float totalDistance = pawnTargetDistance + firstToSecondTargetDistance;
-            bool walkToSecondTarget = false;
-            if(totalDistance > Base.minAutoMountDistance) //If the first target is in forbidden zone, pawn has to walk to second target, in that case only look for animal if distance to targetA is larger than bound
-            {
-                Area_GU areaNoMount = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
-                if(areaNoMount != null && areaNoMount.ActiveCells.Contains(target.Cell))
-                {
-                    totalDistance = pawnTargetDistance;
-                    walkToSecondTarget = true;
-                }
-            }
+            
+
 
             if (totalDistance > Base.minAutoMountDistance)
             {
                 if(pawnData.mount == null){
-                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, walkToSecondTarget, store);
+                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, pawnTargetDistance, firstToSecondTargetDistance, store);
                 }
 
                 if (bestChoiceAnimal != null)
@@ -139,19 +131,34 @@ namespace GiddyUpRideAndRoll.Harmony
 
 
         //Gets animal that'll get the pawn to the target the quickest. Returns null if no animal is found or if walking is faster. 
-        static Pawn GetBestChoiceAnimal(Pawn pawn, LocalTargetInfo target, float pawnTargetDistance, float firstToSecondTargetDistance, bool walkToSecondTarget, ExtendedDataStorage store)
+        static Pawn GetBestChoiceAnimal(Pawn pawn, LocalTargetInfo target, float pawnTargetDistance, float firstToSecondTargetDistance, ExtendedDataStorage store)
         {
 
             //float minDistance = float.MaxValue;
             Pawn closestAnimal = null;
             float timeNeededMin = (pawnTargetDistance + firstToSecondTargetDistance) * pawn.TicksPerMoveDiagonal;
             ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
+            bool firstTargetNoMount = false;
+            bool secondTargetNoMount = false;
+
+            Area_GU areaNoMount = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
+            Area_GU areaDropAnimal = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.DROPANIMAL_LABEL);
+
+            if (areaNoMount != null && areaNoMount.ActiveCells.Contains(target.Cell))
+            {
+                firstTargetNoMount = true;
+                if(pawnTargetDistance < Base.minAutoMountDistance)
+                {
+                    return null;
+                }
+            }
+            
 
             //If owning an animal, prefer this animal if it still gets you to the goal quicker than walking. 
             //This'll make sure pawns prefer the animals they were already riding previously.
-            if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalBusy(pawnData.owning) && pawn.CanReserve(pawnData.owning))
+            if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalNotAvailable(pawnData.owning) && pawn.CanReserve(pawnData.owning))
             {
-                if (CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, walkToSecondTarget, pawnData.owning) < timeNeededMin)
+                if (CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, pawnData.owning, firstTargetNoMount, secondTargetNoMount, areaDropAnimal) < timeNeededMin)
                 {
                     return pawnData.owning;
                 }
@@ -161,12 +168,12 @@ namespace GiddyUpRideAndRoll.Harmony
                                     where p.RaceProps.Animal && IsMountableUtility.isMountable(p) && p.CurJob != null && p.CurJob.def != GUC_JobDefOf.Mounted
                                     select p)
             {
-                if (AnimalBusy(animal) || !pawn.CanReserve(animal))
+                if (AnimalNotAvailable(animal) || !pawn.CanReserve(animal))
                 {
                     continue;
                 }
                 float distanceFromAnimal = DistanceUtility.QuickDistance(animal.Position, target.Cell);
-                if (!walkToSecondTarget)
+                if (!firstTargetNoMount)
                 {
                     distanceFromAnimal += firstToSecondTargetDistance;
                 }
@@ -191,7 +198,7 @@ namespace GiddyUpRideAndRoll.Harmony
                     }
                 }
 
-                float timeNeeded = CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, walkToSecondTarget, animal);
+                float timeNeeded = CalculateTimeNeeded(pawn, ref target, firstToSecondTargetDistance, animal, firstTargetNoMount, secondTargetNoMount, areaDropAnimal);
 
                 if (timeNeeded < timeNeededMin)
                 {
@@ -231,31 +238,45 @@ namespace GiddyUpRideAndRoll.Harmony
             return __result;
         }
 
-        private static bool AnimalBusy(Pawn animal)
+        private static bool AnimalNotAvailable(Pawn animal)
         {
-            bool animalInBadState = animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState;
-            bool animalWounded = animal.health.summaryHealth.SummaryHealthPercent < 1;
-            bool animalNeedsBreak = (animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired);
-
-            bool formingCaravan = false;
+            if (animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState) //animal in bad state, should return before checking other things
+            {
+                return true; 
+            }
+            if(animal.Faction == null || animal.Faction != Faction.OfPlayer) //animal has wrong faction
+            {
+                return true;
+            }
+            if(animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
+            {
+                return true;
+            }
+            if((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired)){ //animal needs break
+                return true;
+            }
             if(animal.GetLord() != null)
             {
-                if(animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan)
+                if(animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan) //animal forming caravan
                 {
-                    formingCaravan = true;
+                    return true;
                 }
             }
-            bool shouldNotInterrupt = animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted);
-            return animalWounded || animalNeedsBreak || animalInBadState || shouldNotInterrupt || formingCaravan;
+            if (animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted)) //animal occupied
+            {
+                return true;
+            }
+            return false;
+
         }
 
         //uses abstract unit of time. Real time values aren't needed, only relative values. 
-        private static float CalculateTimeNeeded(Pawn pawn, ref LocalTargetInfo target, float firstToSecondTargetDistance, bool walkToSecondTarget, Pawn animal)
+        private static float CalculateTimeNeeded(Pawn pawn, ref LocalTargetInfo target, float firstToSecondTargetDistance, Pawn animal, bool firstTargetNoMount, bool secondTargetNoMount, Area_GU areaDropAnimal)
         {
             float pawnAnimalDistance = DistanceUtility.QuickDistance(pawn.Position, animal.Position);
             float animalTargetDistance = DistanceUtility.QuickDistance(animal.Position, target.Cell);
             int adjustedTicksPerMove = TicksPerMoveUtility.adjustedTicksPerMove(pawn, animal, true);
-            float timeNeededAtoB = walkToSecondTarget ? firstToSecondTargetDistance * pawn.TicksPerMoveDiagonal : firstToSecondTargetDistance * adjustedTicksPerMove;
+            float timeNeededAtoB = firstTargetNoMount ? firstToSecondTargetDistance * pawn.TicksPerMoveDiagonal : firstToSecondTargetDistance * adjustedTicksPerMove;
             float timeNeeded = pawnAnimalDistance * pawn.TicksPerMoveDiagonal + animalTargetDistance  * adjustedTicksPerMove + timeNeededAtoB;
             return timeNeeded;
         }
