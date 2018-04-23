@@ -277,7 +277,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
             float walkDistance = DistanceUtility.QuickDistance(pawn.Position, animal.Position);
             float rideDistance = DistanceUtility.QuickDistance(animal.Position, target.Cell);
-            if (firstTargetNoMount)
+            if (firstTargetNoMount && areaDropAnimal != null)
             {
                 rideDistance = 0;
                 IntVec3 parkLoc = DistanceUtility.getClosestAreaLoc(animal.Position, areaDropAnimal);
@@ -285,7 +285,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 walkDistance += DistanceUtility.QuickDistance(parkLoc, target.Cell);
                 walkDistance += firstToSecondTargetDistance;
             }
-            else if (secondTargetNoMount && secondTarget != null && secondTarget.IsValid)
+            else if (secondTargetNoMount && secondTarget != null && secondTarget.IsValid && areaDropAnimal != null)
             {
                 IntVec3 parkLoc = DistanceUtility.getClosestAreaLoc(target.Cell, areaDropAnimal);
                 rideDistance += DistanceUtility.QuickDistance(target.Cell, parkLoc);
