@@ -240,7 +240,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
         private static bool AnimalNotAvailable(Pawn animal)
         {
-            if (animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState) //animal in bad state, should return before checking other things
+            if (animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState || !animal.Spawned) //animal in bad state, should return before checking other things
             {
                 return true; 
             }
@@ -248,11 +248,11 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return true;
             }
-            if(animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
+            if( animal.health != null && animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
             {
                 return true;
             }
-            if((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired)){ //animal needs break
+            if(animal.needs != null && ((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired))){ //animal needs break
                 return true;
             }
             if(animal.GetLord() != null)
