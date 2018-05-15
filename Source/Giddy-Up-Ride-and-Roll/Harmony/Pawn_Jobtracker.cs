@@ -240,32 +240,45 @@ namespace GiddyUpRideAndRoll.Harmony
 
         private static bool AnimalNotAvailable(Pawn animal)
         {
+            Log.Message("1, animal: " + animal.Name);
             if (animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState || !animal.Spawned) //animal in bad state, should return before checking other things
             {
                 return true; 
             }
-            if(animal.Faction == null || animal.Faction != Faction.OfPlayer) //animal has wrong faction
+            Log.Message("2, animal: " + animal.Name);
+
+            if (animal.Faction == null || animal.Faction != Faction.OfPlayer) //animal has wrong faction
             {
                 return true;
             }
-            if( animal.health != null && animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
+            Log.Message("3, animal: " + animal.Name);
+
+            if ( animal.health != null && animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
             {
                 return true;
             }
-            if(animal.needs != null && ((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired))){ //animal needs break
+            Log.Message("4, animal: " + animal.Name);
+
+            if (animal.needs != null && animal.needs.food != null && ((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired))){ //animal needs break
                 return true;
             }
-            if(animal.GetLord() != null)
+            Log.Message("5, animal: " + animal.Name);
+
+            if (animal.GetLord() != null)
             {
                 if(animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan) //animal forming caravan
                 {
                     return true;
                 }
             }
+            Log.Message("6, animal: " + animal.Name);
+
             if (animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted)) //animal occupied
             {
                 return true;
             }
+            Log.Message("7, animal: " + animal.Name);
+
             return false;
 
         }
