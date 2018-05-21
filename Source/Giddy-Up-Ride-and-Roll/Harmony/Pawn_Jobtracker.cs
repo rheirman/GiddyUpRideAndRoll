@@ -255,9 +255,14 @@ namespace GiddyUpRideAndRoll.Harmony
                 return true;
             }
 
-            if (animal.needs != null && animal.needs.food != null && ((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry) || (animal.needs.rest.CurCategory == RestCategory.VeryTired))){ //animal needs break
+            if (animal.needs != null && animal.needs.food != null && ((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry))){ //animal needs break
                 return true;
             }
+            if(animal.needs != null && animal.needs.rest != null && (animal.needs.rest.CurCategory == RestCategory.VeryTired))
+            {
+                return true;
+            }
+
             if (animal.GetLord() != null)
             {
                 if(animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan) //animal forming caravan
