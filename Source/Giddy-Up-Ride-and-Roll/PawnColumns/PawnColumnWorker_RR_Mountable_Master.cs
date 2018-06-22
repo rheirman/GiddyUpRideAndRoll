@@ -13,7 +13,7 @@ namespace GiddyUpRideAndRoll.PawnColumns
     {
         protected override bool HasCheckbox(Pawn pawn)
         {
-            return IsMountableUtility.isMountable(pawn) && pawn.playerSettings != null && pawn.playerSettings.master != null;
+            return IsMountableUtility.isMountable(pawn) && pawn.playerSettings != null && pawn.playerSettings.Master != null;
         }
 
         protected override bool GetValue(Pawn pawn)

@@ -192,7 +192,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 }
                 else if (!animalData.mountableByAnyone && animalData.mountableByMaster)
                 {
-                    if (animal.playerSettings != null && animal.playerSettings.master != pawn)
+                    if (animal.playerSettings != null && animal.playerSettings.Master != pawn)
                     {
                         continue;
                     }
