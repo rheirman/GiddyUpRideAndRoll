@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-
+  <GU_RR_NoMountedHunting_Title>禁止骑乘狩猎</GU_RR_NoMountedHunting_Title>
+  <GU_RR_NoMountedHunting_Description>禁止骑乘狩猎，当使用战斗扩展时，建议把它打开，否则动物在玩耍时可能会受到伤害。</GU_RR_NoMountedHunting_Description>
   <GU_RR_MinAutoMountDistance_Title>最小考虑骑乘距离</GU_RR_MinAutoMountDistance_Title>
   <GU_RR_MinAutoMountDistance_Description>人们会考虑骑乘去工作的最小距离</GU_RR_MinAutoMountDistance_Description>
+  <GU_RR_MinAutoMountDistanceFromAnimal_Title>最小考虑乘骑距离(多工作)</GU_RR_MinAutoMountDistanceFromAnimal_Title>
+  <GU_RR_MinAutoMountDistanceFromAnimal_Description>人们会考虑骑乘去工作的最小距离，如果同时选择了另一个工作，那另一个工作的距离也会被考虑</GU_RR_MinAutoMountDistanceFromAnimal_Description>
   <GU_RR_Designator_GU_DropAnimal_Expand_Label>释放点</GU_RR_Designator_GU_DropAnimal_Expand_Label>  <!--Should be short-->
   <GU_RR_Designator_GU_DropAnimal_Expand_Description>当有人试图骑着动物进入禁止骑乘的区域时，他会到最近的释放点从动物身上下来。</GU_RR_Designator_GU_DropAnimal_Expand_Description>
   <GU_RR_Designator_GU_DropAnimal_Clear_Label>清除释放点</GU_RR_Designator_GU_DropAnimal_Clear_Label>  <!--Should be short-->
