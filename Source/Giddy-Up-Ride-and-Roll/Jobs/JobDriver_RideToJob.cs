@@ -13,7 +13,7 @@ namespace GiddyUpRideAndRoll.Jobs
     //Normal GoTo job won't suffice for impassible targets. Also, no need to exit map using this job. 
     class JobDriver_RideToJob : JobDriver
     {
-        public override bool TryMakePreToilReservations()
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             //For automatic mounting, reserve the mount aswell as targets of the job the pawn is riding to (target B and possibly C). 
 
