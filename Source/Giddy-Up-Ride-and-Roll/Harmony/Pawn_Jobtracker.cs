@@ -23,7 +23,7 @@ namespace GiddyUpRideAndRoll.Harmony
         static void Postfix(Pawn_JobTracker __instance, ref ThinkResult __result)
         {
             Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-            if (!pawn.IsColonistPlayerControlled)
+            if (!pawn.IsColonistPlayerControlled || !pawn.RaceProps.Humanlike)
             {
                 return;
             }
