@@ -15,9 +15,12 @@ namespace GiddyUpRideAndRoll.Harmony
     {
         static void Postfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> __result)
         {
-            if (!pawn.Drafted)
+            foreach (LocalTargetInfo current in GenUI.TargetsAt(clickPos, TargetingParameters.ForAttackHostile(), true))
             {
-                GUC_FloatMenuUtility.AddMountingOptions(clickPos, pawn, __result);
+                if ((current.Thing is Pawn target) && !pawn.Drafted && target.RaceProps.Animal)
+                {
+                    GUC_FloatMenuUtility.AddMountingOptions(target, pawn, __result);
+                }
             }
         }
     }
