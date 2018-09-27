@@ -341,8 +341,8 @@ namespace GiddyUpRideAndRoll.Harmony
 
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, target.Cell);
-
-            if (pawnTargetDistance > 10 || __result.Job.def == JobDefOf.LayDown || __result.Job.def == JobDefOf.Research || pawn.InMentalState || pawn.Dead || pawn.Downed)
+            float riderMountDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, pawn.Position);
+            if (riderMountDistance > 12 || pawnTargetDistance > 12 || __result.Job.def == JobDefOf.LayDown || __result.Job.def == JobDefOf.Research || pawn.InMentalState || pawn.Dead || pawn.Downed)
             {
 
                 if (pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)

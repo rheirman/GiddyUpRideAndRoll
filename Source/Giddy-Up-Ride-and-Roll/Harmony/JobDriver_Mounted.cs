@@ -47,9 +47,7 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 if (pawnData.ownedBy != null && !__instance.interrupted)
                 {
-                    //TODO: this job gets cancelled now, should make it more dominant.
                     __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 10000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.
-                    //__instance.pawn.jobs.TryTakeOrderedJob(new Job(JobDefOf.Wait, 10000, true)); 
                 }
             }
         }
