@@ -34,10 +34,10 @@ namespace GiddyUpRideAndRoll
         public override void DefsLoaded()
         {
 
-            bool defaultNoMountedHunting = AssemblyExists("CombatExtended");
-            Log.Message("Combat extended loaded: " + defaultNoMountedHunting);
+            //bool defaultNoMountedHunting = AssemblyExists("CombatExtended");
+            //Log.Message("Combat extended loaded: " + defaultNoMountedHunting);
             minAutoMountDistance = Settings.GetHandle<int>("minAutoMountDistance", "GU_RR_MinAutoMountDistance_Title".Translate(), "GU_RR_MinAutoMountDistance_Description".Translate(), 16, Validators.IntRangeValidator(0, 500));
-            noMountedHunting = Settings.GetHandle<bool>("noMountedHunting", "GU_RR_NoMountedHunting_Title".Translate(), "GU_RR_NoMountedHunting_Description".Translate(), defaultNoMountedHunting);
+            noMountedHunting = Settings.GetHandle<bool>("noMountedHunting", "GU_RR_NoMountedHunting_Title".Translate(), "GU_RR_NoMountedHunting_Description".Translate(), false);
 
             minAutoMountDistanceFromAnimal = Settings.GetHandle<int>("minAutoMountDistanceFromAnimal", "GU_RR_MinAutoMountDistanceFromAnimal_Title".Translate(), "GU_RR_MinAutoMountDistanceFromAnimal_Description".Translate(), 12, Validators.IntRangeValidator(0, 500));
 
