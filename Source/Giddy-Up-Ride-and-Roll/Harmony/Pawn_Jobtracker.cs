@@ -48,7 +48,7 @@ namespace GiddyUpRideAndRoll.Harmony
             LocalTargetInfo targetB = null;
 
             //For some jobs the first target is B, and the second A.
-            if (__result.Job.def == JobDefOf.TendPatient || __result.Job.def == JobDefOf.Refuel)
+            if (__result.Job.def == JobDefOf.TendPatient || __result.Job.def == JobDefOf.Refuel || __result.Job.def == JobDefOf.FixBrokenDownBuilding)
             {
                 target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
                 targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
