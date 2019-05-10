@@ -60,7 +60,7 @@ namespace GiddyUpRideAndRoll.Jobs
             });
             yield return goToToil;
         }
-        public virtual void ExposeData()
+        public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look<IntVec3>(ref dest, "dest", TargetB.Cell);

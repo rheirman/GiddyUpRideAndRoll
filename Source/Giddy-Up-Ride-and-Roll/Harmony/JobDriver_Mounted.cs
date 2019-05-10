@@ -3,6 +3,7 @@ using GiddyUpCore.Storage;
 using GiddyUpRideAndRoll.Jobs;
 using Harmony;
 using RimWorld;
+using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace GiddyUpRideAndRoll.Harmony
             ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(__instance.pawn);
             if(!__instance.Rider.Drafted && __instance.pawn.Faction == Faction.OfPlayer)
             {
-                if (pawnData.ownedBy != null && !__instance.interrupted)
+                if (pawnData.ownedBy != null && !__instance.interrupted && __instance.Rider.GetCaravan() == null)
                 {
                     __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(GU_RR_DefOf.WaitForRider, pawnData.ownedBy)
                     {

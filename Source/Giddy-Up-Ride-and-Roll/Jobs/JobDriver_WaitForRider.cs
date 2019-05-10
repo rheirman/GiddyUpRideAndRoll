@@ -1,4 +1,5 @@
-﻿using GiddyUpCore.Storage;
+﻿using GiddyUpCore.Jobs;
+using GiddyUpCore.Storage;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace GiddyUpRideAndRoll.Jobs
         {
             Log.Message("MakeNewToils called");
             initialJob = Followee.CurJobDef;
+            this.FailOn(() => pawn.Map == null);
             Toil toil = new Toil
             {
                 tickAction = delegate
@@ -38,6 +40,8 @@ namespace GiddyUpRideAndRoll.Jobs
                        this.Followee.InMentalState ||
                        this.Followee.Dead ||
                        this.Followee.Downed ||
+                       this.Followee.CurJobDef == GUC_JobDefOf.Mount ||
+                       this.Followee.Map == null ||
                        pawn.health.HasHediffsNeedingTend() ||
                        (pawn.needs.food != null && pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry) ||
                        pawn.needs.rest != null && pawn.needs.rest.CurCategory >= RestCategory.VeryTired ||

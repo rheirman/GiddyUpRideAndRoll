@@ -61,7 +61,7 @@
     <Compile Include="Alerts\Alert_NoDropAnimal.cs" />
     <Compile Include="Base.cs" />
     <Compile Include="Harmony\FloatMenuMakerMap.cs" />
-    <Compile Include="Harmony\GenSpawn.cs" />
+    <Compile Include="Harmony\CaravanArrivalAction_Enter.cs" />
     <Compile Include="Harmony\JobDriver_Mount.cs" />
     <Compile Include="Harmony\JobDriver.cs" />
     <Compile Include="Harmony\JobDriver_Mounted.cs" />
