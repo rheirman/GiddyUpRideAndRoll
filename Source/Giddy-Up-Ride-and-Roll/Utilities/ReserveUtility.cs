@@ -16,6 +16,7 @@ namespace GiddyUpRideAndRoll.Utilities
             int targetACount = 1;
             int targetBCount = 1;
             bool result = true;
+            /*
             if (targetJob.targetB.Thing is Building_Bed)
             {
                 Building_Bed bed = (Building_Bed)targetJob.targetB.Thing;
@@ -25,6 +26,7 @@ namespace GiddyUpRideAndRoll.Utilities
             {
                 targetACount = targetJob.def.joyMaxParticipants;
             }
+            */
             if (!targetJob.targetQueueA.NullOrEmpty())
             {
                 jobDriver.pawn.ReserveAsManyAsPossible(targetJob.targetQueueA, jobDriver.job, 1, -1, null);
