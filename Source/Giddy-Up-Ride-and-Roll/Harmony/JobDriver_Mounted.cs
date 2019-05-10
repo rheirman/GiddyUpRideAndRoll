@@ -18,7 +18,7 @@ namespace GiddyUpRideAndRoll.Harmony
     class JobDriver_Mounted_ShouldCancelJob
     {
         //TODO: maybe xml this instead of hard coding. 
-        static JobDef[] allowedJobs = {GU_RR_JobDefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.Wait_Combat, JobDefOf.Wait_MaintainPosture, JobDefOf.Wait_SafeTemperature, JobDefOf.Wait_Wander, JobDefOf.Wear, JobDefOf.TakeInventory};
+        static JobDef[] allowedJobs = {GU_RR_DefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.Wait_Combat, JobDefOf.Wait_MaintainPosture, JobDefOf.Wait_SafeTemperature, JobDefOf.Wait_Wander, JobDefOf.Wear, JobDefOf.TakeInventory};
         static void Postfix(ExtendedPawnData riderData, JobDriver_Mounted __instance, ref bool __result)
         {
             if (__instance.pawn.Faction == Faction.OfPlayer && !__instance.Rider.Drafted && __instance.Rider.CurJob != null && !allowedJobs.Contains(__instance.Rider.CurJob.def))
@@ -35,8 +35,6 @@ namespace GiddyUpRideAndRoll.Harmony
         }
     }
 
-   
-
     [HarmonyPatch(typeof(JobDriver_Mounted), "FinishAction")]
     class JobDriver_Mounted_FinishAction
     {
@@ -47,7 +45,14 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 if (pawnData.ownedBy != null && !__instance.interrupted)
                 {
-                    __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.Wait, 10000, true)); //wait a while before returning to camp, to give the rider the chance to ride back. Not needed when pawn is master.
+                    __instance.pawn.jobs.jobQueue.EnqueueFirst(new Job(GU_RR_DefOf.WaitForRider, pawnData.ownedBy)
+                    {
+                        expiryInterval = 10000,
+                        checkOverrideOnExpire = true,
+                        followRadius = 8,
+                        locomotionUrgency = LocomotionUrgency.Walk
+                    }
+                    ); //follow the rider for a while to give it an opportunity to take a ride back.  
                 }
             }
         }

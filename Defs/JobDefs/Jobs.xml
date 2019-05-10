@@ -5,4 +5,10 @@
 		<reportString>Riding to job</reportString>
 		<casualInterruptible>false</casualInterruptible>
 	  </JobDef>
+	  <JobDef>
+		<defName>WaitForRider</defName>
+		<driverClass>GiddyUpRideAndRoll.Jobs.JobDriver_WaitForRider</driverClass>
+		<reportString>Waiting for rider</reportString>
+		<casualInterruptible>false</casualInterruptible>
+	  </JobDef>
   </Defs>

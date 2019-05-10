@@ -221,7 +221,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 ExtendedPawnData pawnDataTest = store.GetExtendedDataFor(pawn);
                 pawnDataTest.targetJob = oldJob;
                 Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
-                Job rideToJob = new Job(GU_RR_JobDefOf.RideToJob, closestAnimal, target);
+                Job rideToJob = new Job(GU_RR_DefOf.RideToJob, closestAnimal, target);
 
                 if (pawnData.mount != null)
                 {
