@@ -226,12 +226,17 @@ namespace GiddyUpRideAndRoll.Harmony
                 if (pawnData.mount != null)
                 {
                     __instance.jobQueue.EnqueueFirst(oldJob);
-                    __result = new ThinkResult(rideToJob, __result.SourceNode, __result.Tag, false);
+
+                    if(__result.Job.def != JobDefOf.Hunt)//Don't ride to job when hunting. 
+                        __result = new ThinkResult(rideToJob, __result.SourceNode, __result.Tag, false);
                 }
                 else
                 {
                     __instance.jobQueue.EnqueueFirst(oldJob);
-                    __instance.jobQueue.EnqueueFirst(rideToJob);
+
+                    if (__result.Job.def != JobDefOf.Hunt)//Don't ride to job when hunting.
+                        __instance.jobQueue.EnqueueFirst(rideToJob);
+
                     __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
                 }
             }
