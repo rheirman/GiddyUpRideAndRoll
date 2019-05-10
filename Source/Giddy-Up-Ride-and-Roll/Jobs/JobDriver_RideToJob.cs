@@ -44,9 +44,10 @@ namespace GiddyUpRideAndRoll.Jobs
             {
                 goToToil = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);
             }
-            else
+            else if (Map != null)
             {
-                bool cellFound = CellFinder.TryFindRandomReachableCellNear(this.job.targetB.Cell, Map, 2, TraverseMode.PassAllDestroyableThings, (IntVec3 c) => (c.Standable(pawn.Map)), null, out dest);
+                bool cellFound = false;
+                cellFound = CellFinder.TryFindRandomReachableCellNear(this.job.targetB.Cell, Map, 2, TraverseMode.PassAllDestroyableThings, (IntVec3 c) => (c.Standable(pawn.Map)), null, out dest);
                 if (!cellFound)
                 {
                     dest = this.job.targetB.Cell;

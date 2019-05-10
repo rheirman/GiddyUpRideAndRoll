@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using GiddyUpCore.Storage;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,13 @@ namespace GiddyUpRideAndRoll.Jobs
             }
         }
         int moveInterval = Rand.Range(300, 1200);
-
         private JobDef initialJob;
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
             Log.Message("MakeNewToils called");
             initialJob = Followee.CurJobDef;
-            yield return new Toil
+            Toil toil = new Toil
             {
                 tickAction = delegate
                 {
@@ -44,7 +44,7 @@ namespace GiddyUpRideAndRoll.Jobs
                        (this.Followee.GetRoom() != null && !(this.Followee.GetRoom().Role == GU_RR_DefOf.Barn || this.Followee.GetRoom().Role == RoomRoleDefOf.None)))//Don't allow animals to follow pawns inside
                     {
                         this.EndJobWith(JobCondition.Incompletable);
-                    }
+                    }   
                     
                     if (pawn.IsHashIntervalTick(moveInterval) && !this.pawn.pather.Moving)
                     {
@@ -54,13 +54,24 @@ namespace GiddyUpRideAndRoll.Jobs
                     }
                     if(TimeUntilExpire(pawn.CurJob) < 10 && Followee.CurJobDef == initialJob)
                     {
-                        Log.Message("Folowee " + Followee.Name + "still doing same job, increasing expiryInterval");
                         pawn.CurJob.expiryInterval += 1000;
                     }
                 },
                 defaultCompleteMode = ToilCompleteMode.Never
             };
+            toil.AddFinishAction(() =>
+            {
+                if(Base.Instance.GetExtendedDataStorage() is ExtendedDataStorage store)
+                {
+                    ExtendedPawnData animalData = store.GetExtendedDataFor(pawn);
+                    ExtendedPawnData pawnData = store.GetExtendedDataFor(Followee);
+                    pawnData.owning = null;
+                    animalData.ownedBy = null;
+                }
+            });
+            yield return toil;
         }
+        
         private int TimeUntilExpire(Job job)
         {
             return job.expiryInterval - (Find.TickManager.TicksGame - job.startTick);

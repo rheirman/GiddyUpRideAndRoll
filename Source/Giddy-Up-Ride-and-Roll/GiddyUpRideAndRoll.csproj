@@ -64,6 +64,7 @@
     <Compile Include="Harmony\JobDriver_Mount.cs" />
     <Compile Include="Harmony\JobDriver.cs" />
     <Compile Include="Harmony\JobDriver_Mounted.cs" />
+    <Compile Include="Harmony\Pawn.cs" />
     <Compile Include="Harmony\Pawn_Jobtracker.cs" />
     <Compile Include="GU_RR_JobDefOf.cs" />
     <Compile Include="Jobs\JobDriver_RideToJob.cs" />

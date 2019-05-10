@@ -17,4 +17,7 @@
 <GU_RR_NoDropAnimal_Label>No mount drop spots (Giddy-up!)</GU_RR_NoDropAnimal_Label>
 <GU_RR_NoDropAnimal_Description>A forbid riding area has been designated but no mount drop spots exist. This way the forbid riding area has no effect. Check out mount drop spots in the Zone/Area menu.</GU_RR_NoDropAnimal_Description>
 <GU_RR_NotReachable_DropAnimal_Message>Colonist could not reach Giddy-up! Drop off point. Make sure all drop off points are reachable</GU_RR_NotReachable_DropAnimal_Message>
+
+<GU_RR_Gizmo_LeaveRider_Label>Leave rider</GU_RR_Gizmo_LeaveRider_Label>
+<GU_RR_Gizmo_LeaveRider_Description>Order the animal to stop waiting for the rider.</GU_RR_Gizmo_LeaveRider_Description>
 </LanguageData>
