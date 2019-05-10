@@ -13,6 +13,8 @@ namespace GiddyUpRideAndRoll.Jobs
     //Normal GoTo job won't suffice for impassible targets. Also, no need to exit map using this job. 
     class JobDriver_RideToJob : JobDriver
     {
+        IntVec3 dest;
+
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             //For automatic mounting, reserve the mount aswell as targets of the job the pawn is riding to (target B and possibly C). 
@@ -37,20 +39,16 @@ namespace GiddyUpRideAndRoll.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            IntVec3 dest;
             Toil goToToil = null;
-
             if (this.job.targetB.Thing is Pawn)
             {
                 goToToil = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);
             }
-            else if (Map != null)
+            else
             {
-                bool cellFound = false;
-                cellFound = CellFinder.TryFindRandomReachableCellNear(this.job.targetB.Cell, Map, 2, TraverseMode.PassAllDestroyableThings, (IntVec3 c) => (c.Standable(pawn.Map)), null, out dest);
-                if (!cellFound)
+                if(Scribe.mode != LoadSaveMode.PostLoadInit)
                 {
-                    dest = this.job.targetB.Cell;
+                    dest = RCellFinder.RandomWanderDestFor(pawn, TargetB.Cell, 8, ((Pawn p, IntVec3 loc, IntVec3 root) => true), Danger.Some);
                 }
                 goToToil = Toils_Goto.GotoCell(dest, PathEndMode.Touch);
             }
@@ -62,7 +60,13 @@ namespace GiddyUpRideAndRoll.Jobs
             });
             yield return goToToil;
         }
+        public virtual void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look<IntVec3>(ref dest, "dest", TargetB.Cell);
+        }
 
-        
+
+
     }
 }
