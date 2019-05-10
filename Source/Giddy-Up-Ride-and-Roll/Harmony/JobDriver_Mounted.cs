@@ -27,7 +27,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 {
                     __result = false;
                 }
-                else
+                else if (!__instance.Rider.pather.Moving)
                 {
                     __result = true;
                 }
