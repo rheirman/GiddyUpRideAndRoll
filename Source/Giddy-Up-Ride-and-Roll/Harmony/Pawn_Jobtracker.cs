@@ -254,11 +254,14 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return true;
             }
-
-            if (animal.needs != null && animal.needs.food != null && ((animal.needs.food.CurCategory == HungerCategory.UrgentlyHungry))){ //animal needs break
+            if (animal.health.HasHediffsNeedingTend())
+            {
                 return true;
             }
-            if(animal.needs != null && animal.needs.rest != null && (animal.needs.rest.CurCategory == RestCategory.VeryTired))
+            if (animal.needs != null && animal.needs.food != null && ((animal.needs.food.CurCategory >= HungerCategory.UrgentlyHungry))){ //animal needs break
+                return true;
+            }
+            if(animal.needs != null && animal.needs.rest != null && (animal.needs.rest.CurCategory >= RestCategory.VeryTired))
             {
                 return true;
             }
@@ -342,7 +345,7 @@ namespace GiddyUpRideAndRoll.Harmony
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, target.Cell);
             float riderMountDistance = DistanceUtility.QuickDistance(pawnData.owning.Position, pawn.Position);
-            if (riderMountDistance > 12 || pawnTargetDistance > 12 || __result.Job.def == JobDefOf.LayDown || __result.Job.def == JobDefOf.Research || pawn.InMentalState || pawn.Dead || pawn.Downed)
+            if (riderMountDistance > 10 || pawnTargetDistance > 10 || __result.Job.def == JobDefOf.LayDown || __result.Job.def == JobDefOf.Research || pawn.InMentalState || pawn.Dead || pawn.Downed)
             {
 
                 if (pawnData.owning.jobs.curJob != null && pawnData.owning.jobs.curJob.def == JobDefOf.Wait)
