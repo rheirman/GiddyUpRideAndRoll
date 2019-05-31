@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
+		<modNameReadable>Giddy-up! Ride and Roll</modNameReadable>
+		<modIdentifier>GiddyUpRideAndRoll</modIdentifier>
+		<linkUrl>https://ludeon.com/forums/index.php?topic=37323</linkUrl>
+	</HugsLib.UpdateFeatureDef>
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>GiddyUpRideAndRol_1_2_0</defName>
+		<assemblyVersion>1.2.0</assemblyVersion>
+		<content>
+&lt;color=orange&gt;&lt;b&gt;Giddy-up! Ride and Roll just updated with major improvements!&lt;/b&gt;&lt;/color&gt;
+
+- Wait for rider job added. Instead of freezing like a statue, animals now walk around nearby when waiting for their rider and follow the rider around. Moreover, a button is added so you can easily order animals to stop waiting. 
+- Animals wait for riders more intelligently. If the rider is doing the same job for a long time (for instance, mining), the animal is more patient. Inside rooms (like hospitals, workshops etc), the animals generally won't wait for riders. 
+- Pawns now stay mounted if they have to perform hauling or walking as part of jobs that cannot be done mounted. This reduces the moments where you think: "why isn't he riding there?" by a great deal. 
+- Pawns now arrive mounted on their destination when Giddy-up Caravan is used. 
+- Sleeping animals are now also automatically mounted when they have enough rest (more than 50%). This increases mount usage for your nightowl pawns. 
+- Mounted hunting doesn't result in pawns riding too close to the animal anymore. 
+- Animals needing tending or that are starving cannot be selected as mount automatically anymore.
+- Fixed pawns reserving double beds completely when going there mounted, resulting in bed partners sleeping on the ground. 
+- Fixed pawns riding to broken buildings instead of components first when performing building maintenance. 
+
+Please consider supporting me on Ko-fi if you like these updates: https://ko-fi.com/I2I75ZMH (go to the mod page for a clickable link). 
+		</content>
+	</HugsLib.UpdateFeatureDef>
+</Defs>
