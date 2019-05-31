@@ -19,4 +19,7 @@
   <GU_RR_NoDropAnimal_Description>騎乗禁止エリアは指定されていますが、降馬場エリアがありません。この状態では、騎乗禁止エリアは機能しません。メインメニューから「アーキテクト」を開き「ゾーン」メニューにある「降馬場エリア」を確認してください。</GU_RR_NoDropAnimal_Description>
   <GU_RR_NotReachable_DropAnimal_Message>入植者がGiddy-up!の「降馬場エリア」に到達できませんでした。全ての「降馬場エリア」に到達可能であることを確認してください。</GU_RR_NotReachable_DropAnimal_Message>
 
+  <GU_RR_Gizmo_LeaveRider_Label>乗り手の待機を停止</GU_RR_Gizmo_LeaveRider_Label>
+  <GU_RR_Gizmo_LeaveRider_Description>乗り手を待つのをやめるように動物に命令します。</GU_RR_Gizmo_LeaveRider_Description>
+
 </LanguageData>
