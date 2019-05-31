@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace GiddyUpRideAndRoll.Harmony
 {
@@ -19,7 +20,7 @@ namespace GiddyUpRideAndRoll.Harmony
     class JobDriver_Mounted_ShouldCancelJob
     {
         //TODO: maybe xml this instead of hard coding. 
-        static JobDef[] allowedJobs = {GU_RR_DefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.Wait_Combat, JobDefOf.Wait_MaintainPosture, JobDefOf.Wait_SafeTemperature, JobDefOf.Wait_Wander, JobDefOf.Wear, JobDefOf.TakeInventory};
+        static JobDef[] allowedJobs = {GU_RR_DefOf.RideToJob, JobDefOf.Arrest, JobDefOf.AttackMelee, JobDefOf.AttackStatic, JobDefOf.Capture, JobDefOf.DropEquipment, JobDefOf.EscortPrisonerToBed, JobDefOf.ExtinguishSelf, JobDefOf.Flee, JobDefOf.FleeAndCower, JobDefOf.Goto, JobDefOf.GotoSafeTemperature, JobDefOf.GotoWander, JobDefOf.HaulToCell, JobDefOf.HaulToContainer, JobDefOf.Ignite, JobDefOf.Insult, JobDefOf.Kidnap, JobDefOf.Open, JobDefOf.RemoveApparel, JobDefOf.Rescue, JobDefOf.TakeWoundedPrisonerToBed, JobDefOf.TradeWithPawn, JobDefOf.UnloadInventory, JobDefOf.UseArtifact, JobDefOf.UseVerbOnThing, JobDefOf.Vomit, JobDefOf.Wait, JobDefOf.Wait_Combat, JobDefOf.Wait_MaintainPosture, JobDefOf.Wait_SafeTemperature, JobDefOf.Wait_Wander, JobDefOf.Wear, JobDefOf.TakeInventory, JobDefOf.UnloadYourInventory};
         static void Postfix(ExtendedPawnData riderData, JobDriver_Mounted __instance, ref bool __result)
         {
             if (__instance.pawn.Faction == Faction.OfPlayer && !__instance.Rider.Drafted && __instance.Rider.CurJob != null && !allowedJobs.Contains(__instance.Rider.CurJob.def))

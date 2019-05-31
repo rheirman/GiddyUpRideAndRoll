@@ -278,8 +278,12 @@ namespace GiddyUpRideAndRoll.Harmony
                     return true;
                 }
             }
+            if(animal.CurJob.def == JobDefOf.LayDown && animal.needs != null && animal.needs.rest.CurLevelPercentage < 0.5f)//only allow resting animals if they have enough energy. 
+            {
+                return true; 
+            }
 
-            if (animal.CurJob != null && (animal.CurJob.def == JobDefOf.LayDown || animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted)) //animal occupied
+            if (animal.CurJob != null && (animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted)) //animal occupied
             {
                 return true;
             }
