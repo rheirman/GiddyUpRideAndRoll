@@ -31,6 +31,14 @@ namespace GiddyUpRideAndRoll.Jobs
             Log.Message("MakeNewToils called");
             initialJob = Followee.CurJobDef;
             this.FailOn(() => pawn.Map == null);
+            Toil firstToil = new Toil {
+                initAction = delegate
+                {
+                    WalkRandomNearby();
+                }
+            };
+            firstToil.defaultCompleteMode = ToilCompleteMode.Instant;
+            yield return firstToil;
             Toil toil = new Toil
             {
                 tickAction = delegate
@@ -47,16 +55,16 @@ namespace GiddyUpRideAndRoll.Jobs
                        pawn.needs.rest != null && pawn.needs.rest.CurCategory >= RestCategory.VeryTired ||
                        (this.Followee.GetRoom() != null && !(this.Followee.GetRoom().Role == GU_RR_DefOf.Barn || this.Followee.GetRoom().Role == RoomRoleDefOf.None)))//Don't allow animals to follow pawns inside
                     {
+                        Log.Message("ending job, room: " + this.Followee.GetRoom().Role.defName);
                         this.EndJobWith(JobCondition.Incompletable);
                     }   
                     
                     if (pawn.IsHashIntervalTick(moveInterval) && !this.pawn.pather.Moving)
                     {
-                        IntVec3 target = RCellFinder.RandomWanderDestFor(Followee, this.Followee.Position, 8, ((Pawn p, IntVec3 loc, IntVec3 root) => true), Danger.Some);
-                        this.pawn.pather.StartPath(target, PathEndMode.Touch);
+                        WalkRandomNearby();
                         moveInterval = Rand.Range(300, 1200);
                     }
-                    if(TimeUntilExpire(pawn.CurJob) < 10 && Followee.CurJobDef == initialJob)
+                    if (TimeUntilExpire(pawn.CurJob) < 10 && Followee.CurJobDef == initialJob)
                     {
                         pawn.CurJob.expiryInterval += 1000;
                     }
@@ -75,7 +83,13 @@ namespace GiddyUpRideAndRoll.Jobs
             });
             yield return toil;
         }
-        
+
+        private void WalkRandomNearby()
+        {
+            IntVec3 target = RCellFinder.RandomWanderDestFor(Followee, this.Followee.Position, 8, ((Pawn p, IntVec3 loc, IntVec3 root) => true), Danger.Some);
+            this.pawn.pather.StartPath(target, PathEndMode.Touch);
+        }
+
         private int TimeUntilExpire(Job job)
         {
             return job.expiryInterval - (Find.TickManager.TicksGame - job.startTick);

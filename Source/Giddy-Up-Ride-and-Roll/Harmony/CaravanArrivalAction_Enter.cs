@@ -33,17 +33,13 @@ namespace GiddyUpRideAndRoll.Harmony
         }
         public static void MountCaravanMounts(List<Pawn> pawns)
         {
-            Log.Message("MountCaravanMounts called!");
             foreach (Pawn pawn in pawns)
             {
-                Log.Message("pawn: " + pawn.Name);
                 if (pawn.IsColonist && Base.Instance.GetExtendedDataStorage() is ExtendedDataStorage store && pawn.Spawned)
                 {
-                    Log.Message("check succeeded for " + pawn.Name);
                     ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
                     if (pawnData.caravanMount is Pawn animal)
                     {
-                        Log.Message("pawn has caravan mount, adding mount");
                         ExtendedPawnData animalData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animal);
                         pawnData.mount = animal;
                         TextureUtility.setDrawOffset(pawnData);

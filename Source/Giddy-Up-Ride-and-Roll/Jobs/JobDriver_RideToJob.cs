@@ -39,19 +39,7 @@ namespace GiddyUpRideAndRoll.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Toil goToToil = null;
-            if (this.job.targetB.Thing is Pawn)
-            {
-                goToToil = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);
-            }
-            else
-            {
-                if(Scribe.mode != LoadSaveMode.PostLoadInit)
-                {
-                    dest = RCellFinder.RandomWanderDestFor(pawn, TargetB.Cell, 8, ((Pawn p, IntVec3 loc, IntVec3 root) => true), Danger.Some);
-                }
-                goToToil = Toils_Goto.GotoCell(dest, PathEndMode.Touch);
-            }
+            Toil goToToil = goToToil = Toils_Goto.GotoCell(TargetB.Cell, PathEndMode.Touch);
 
             this.AddFinishAction(delegate
             {
