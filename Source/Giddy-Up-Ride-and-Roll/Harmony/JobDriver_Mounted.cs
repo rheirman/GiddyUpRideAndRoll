@@ -25,9 +25,13 @@ namespace GiddyUpRideAndRoll.Harmony
         {
             if (__instance.pawn.Faction == Faction.OfPlayer && !__instance.Rider.Drafted && __instance.Rider.CurJob != null && !allowedJobs.Contains(__instance.Rider.CurJob.def))
             {
-                if(__instance.Rider.CurJob.def == JobDefOf.Hunt && !Base.noMountedHunting)
+                if(__instance.Rider.CurJob.def == JobDefOf.EnterTransporter)
                 {
-                    __result = false;
+                    __result = true;
+                }
+                if(__instance.Rider.CurJob.def == JobDefOf.Hunt && Base.noMountedHunting)
+                {
+                    __result = true;
                 }
                 else if (!__instance.Rider.pather.Moving)
                 {

@@ -8,6 +8,11 @@ using System.Text;
 using Verse;
 using Verse.AI;
 
+/**
+ * DEPRICATED. For save compatibility this class isn't removed. 
+ * This class implemented the "Ride to Job" functionality. Now that pawns can stay mounted while doing forbidden jobs as long as they are moving, this job is no longer needed. 
+ **/
+
 namespace GiddyUpRideAndRoll.Jobs
 {
     //Normal GoTo job won't suffice for impassible targets. Also, no need to exit map using this job. 

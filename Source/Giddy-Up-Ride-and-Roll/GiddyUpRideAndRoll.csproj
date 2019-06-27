@@ -68,12 +68,12 @@
     <Compile Include="Harmony\Pawn.cs" />
     <Compile Include="Harmony\Pawn_Jobtracker.cs" />
     <Compile Include="GU_RR_JobDefOf.cs" />
-    <Compile Include="Jobs\JobDriver_RideToJob.cs" />
+    <Compile Include="Depricated\JobDriver_RideToJob.cs" />
     <Compile Include="Jobs\JobDriver_WaitForRider.cs" />
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Anyone.cs" />
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Master.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\ReserveUtility.cs" />
+    <Compile Include="Depricated\ReserveUtility.cs" />
     <Compile Include="Zones\Designator_GU_DropAnimal_Clear.cs" />
     <Compile Include="Zones\Designator_GU_DropAnimal_Expand.cs" />
     <Compile Include="Zones\Designator_GU_NoMount_Clear.cs" />

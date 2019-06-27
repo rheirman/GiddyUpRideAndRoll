@@ -28,7 +28,6 @@ namespace GiddyUpRideAndRoll.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Log.Message("MakeNewToils called");
             initialJob = Followee.CurJobDef;
             this.FailOn(() => pawn.Map == null);
             Toil firstToil = new Toil {
@@ -43,19 +42,18 @@ namespace GiddyUpRideAndRoll.Jobs
             {
                 tickAction = delegate
                 {
-                    if (this.Followee.jobs.curJob.def == JobDefOf.LayDown ||
-                       this.Followee.jobs.curJob.def == JobDefOf.Research ||
-                       this.Followee.InMentalState ||
+                    if (this.Followee.Map == null ||
                        this.Followee.Dead ||
                        this.Followee.Downed ||
+                       this.Followee.InMentalState ||
+                       this.Followee.jobs.curJob.def == JobDefOf.LayDown ||
+                       this.Followee.jobs.curJob.def == JobDefOf.Research ||
                        this.Followee.CurJobDef == GUC_JobDefOf.Mount ||
-                       this.Followee.Map == null ||
                        pawn.health.HasHediffsNeedingTend() ||
                        (pawn.needs.food != null && pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry) ||
                        pawn.needs.rest != null && pawn.needs.rest.CurCategory >= RestCategory.VeryTired ||
                        (this.Followee.GetRoom() != null && !(this.Followee.GetRoom().Role == GU_RR_DefOf.Barn || this.Followee.GetRoom().Role == RoomRoleDefOf.None)))//Don't allow animals to follow pawns inside
                     {
-                        Log.Message("ending job, room: " + this.Followee.GetRoom().Role.defName);
                         this.EndJobWith(JobCondition.Incompletable);
                     }   
                     

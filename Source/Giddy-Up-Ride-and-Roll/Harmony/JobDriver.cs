@@ -40,7 +40,7 @@ namespace GiddyUpRideAndRoll.Harmony
             bool startedPark = false;
             IntVec3 originalLoc = new IntVec3();
             IntVec3 parkLoc = new IntVec3();
-
+            PathEndMode endMode;
             if (pawnData.mount != null && areaNoMount != null && areaDropAnimal != null)
             {
 
@@ -57,6 +57,7 @@ namespace GiddyUpRideAndRoll.Harmony
                             //toils.Add(parkToil);
                             parkLoc = DistanceUtility.getClosestAreaLoc(toil.actor.pather.Destination.Cell, areaDropAnimal);
                             originalLoc = toil.actor.pather.Destination.Cell;
+
                             if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
                             {
                                 toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
@@ -70,7 +71,7 @@ namespace GiddyUpRideAndRoll.Harmony
                         checkedToil = true;
                         if (startedPark && toil.actor.pather.nextCell == parkLoc){
                             pawnData.mount = null;
-                            toil.actor.pather.StartPath(originalLoc, PathEndMode.ClosestTouch);
+                            toil.actor.pather.StartPath(originalLoc, PathEndMode.OnCell);
                             if (pawnData.owning != null)
                             {
                                 ExtendedPawnData animalData = store.GetExtendedDataFor(pawnData.owning);

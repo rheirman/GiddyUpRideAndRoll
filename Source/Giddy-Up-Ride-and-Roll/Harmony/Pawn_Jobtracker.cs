@@ -43,6 +43,16 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
+            ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
+            if(store == null)
+            {
+                return;
+            }
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
+            if(pawnData.mount != null)
+            {
+                return; 
+            }
 
             LocalTargetInfo target = null;
             LocalTargetInfo targetB = null;
@@ -62,9 +72,6 @@ namespace GiddyUpRideAndRoll.Harmony
                 target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
                 targetB = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.B);
             }
-
-
-
             if (!target.IsValid)
             {
                 return;
@@ -76,9 +83,6 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-            ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
-            ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
-
             if (store == null || pawnData == null)
             {
                 return;
@@ -94,7 +98,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
 
-            Pawn bestChoiceAnimal = pawnData.mount;
+            Pawn bestChoiceAnimal = null;
             //Pawn bestChoiceAnimal = null;
 
             float pawnTargetDistance = DistanceUtility.QuickDistance(pawn.Position, target.Cell);
@@ -107,22 +111,15 @@ namespace GiddyUpRideAndRoll.Harmony
                     firstToSecondTargetDistance = DistanceUtility.QuickDistance(target.Cell, targetB.Cell);
                 }
             }
-
             float totalDistance = pawnTargetDistance + firstToSecondTargetDistance;
-            
-
 
             if (totalDistance > Base.minAutoMountDistance)
             {
-                if(pawnData.mount == null){
-                    bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, targetB, pawnTargetDistance, firstToSecondTargetDistance, store);
-                }
-
+                bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, targetB, pawnTargetDistance, firstToSecondTargetDistance, store);
                 if (bestChoiceAnimal != null)
                 {
                     __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, targetB, ref pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
                 }
-
                 //Log.Message("timeNeededOriginal: " + timeNeededOriginal);
                 //Log.Message("adjusted ticks per move: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, closestAnimal, true));
                 //Log.Message("original ticks per move: " + pawn.TicksPerMoveDiagonal);
@@ -221,24 +218,8 @@ namespace GiddyUpRideAndRoll.Harmony
                 ExtendedPawnData pawnDataTest = store.GetExtendedDataFor(pawn);
                 pawnDataTest.targetJob = oldJob;
                 Job mountJob = new Job(GUC_JobDefOf.Mount, closestAnimal);
-                Job rideToJob = new Job(GU_RR_DefOf.RideToJob, closestAnimal, target);
-
-                if (pawnData.mount != null)
-                {
-                    __instance.jobQueue.EnqueueFirst(oldJob);
-
-                    if(__result.Job.def != JobDefOf.Hunt)//Don't ride to job when hunting. 
-                        __result = new ThinkResult(rideToJob, __result.SourceNode, __result.Tag, false);
-                }
-                else
-                {
-                    __instance.jobQueue.EnqueueFirst(oldJob);
-
-                    if (__result.Job.def != JobDefOf.Hunt)//Don't ride to job when hunting.
-                        __instance.jobQueue.EnqueueFirst(rideToJob);
-
-                    __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
-                }
+                __instance.jobQueue.EnqueueFirst(oldJob);
+                __result = new ThinkResult(mountJob, __result.SourceNode, __result.Tag, false);
             }
             return __result;
         }

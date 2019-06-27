@@ -10,23 +10,32 @@ namespace GiddyUpRideAndRoll.Utilities
 {
     public static class ReserveUtility
     {
+        /**
+          * DEPRICATED. For save compatibility this class isn't removed. 
+          */
 
         public static bool ReserveEveryThingOfJob(Job targetJob, JobDriver jobDriver)
         {
             int targetACount = 1;
             int targetBCount = 1;
             bool result = true;
+            
             /*
-            if (targetJob.targetB.Thing is Building_Bed)
+            if (targetJob.targetA.Thing is Building_Bed)
             {
                 Building_Bed bed = (Building_Bed)targetJob.targetB.Thing;
-                targetBCount = bed.SleepingSlotsCount;
+                //targetBCount = bed.SleepingSlotsCount;
+                return jobDriver.pawn.Reserve(bed, targetJob, bed.SleepingSlotsCount, 0, null, false);
             }
+            */
+            
+            /*
             if (targetJob.def.joyMaxParticipants > 1)
             {
                 targetACount = targetJob.def.joyMaxParticipants;
             }
             */
+            
             if (!targetJob.targetQueueA.NullOrEmpty())
             {
                 jobDriver.pawn.ReserveAsManyAsPossible(targetJob.targetQueueA, jobDriver.job, 1, -1, null);

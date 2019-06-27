@@ -33,26 +33,19 @@ namespace GiddyUpRideAndRoll.Harmony
         }
         public static void MountCaravanMounts(List<Pawn> pawns)
         {
-            Log.Message("MountCaravanMounts called");
             
             foreach (Pawn pawn in pawns)
             {
                 if (pawn.IsColonist && Base.Instance.GetExtendedDataStorage() is ExtendedDataStorage store && pawn.Spawned)
                 {
-                    Log.Message("1");
                     ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
                     if (pawnData.caravanMount is Pawn animal)
                     {
-                        Log.Message("2");
                         ExtendedPawnData animalData = store.GetExtendedDataFor(animal);
                         pawnData.mount = animal;
-                        //TextureUtility.setDrawOffset(pawnData);
-                        Log.Message("3");
                         Job jobAnimal = new Job(GUC_JobDefOf.Mounted, pawn);
-                        Log.Message("4");
                         jobAnimal.count = 1;
                         animal.jobs.TryTakeOrderedJob(jobAnimal);
-                        Log.Message("5");
                     }
                 }
 
