@@ -69,7 +69,6 @@
     <Compile Include="Harmony\Pawn_Jobtracker.cs" />
     <Compile Include="GU_RR_JobDefOf.cs" />
     <Compile Include="Depricated\JobDriver_RideToJob.cs" />
-    <Compile Include="Harmony\WorkGiver_Train.cs" />
     <Compile Include="Jobs\JobDriver_WaitForRider.cs" />
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Anyone.cs" />
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Master.cs" />
