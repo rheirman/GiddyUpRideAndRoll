@@ -259,7 +259,7 @@ namespace GiddyUpRideAndRoll.Harmony
                     return true;
                 }
             }
-            if(animal.CurJob.def == JobDefOf.LayDown && animal.needs != null && animal.needs.rest.CurLevelPercentage < 0.5f)//only allow resting animals if they have enough energy. 
+            if(animal.CurJob != null && animal.CurJob.def == JobDefOf.LayDown && animal.needs != null && animal.needs.rest.CurLevelPercentage < 0.5f)//only allow resting animals if they have enough energy. 
             {
                 return true; 
             }
