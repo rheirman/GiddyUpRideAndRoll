@@ -3,8 +3,24 @@
 	<name>Giddy-up! Ride and Roll</name>
 	<author>Roolo</author>
 	<supportedVersions>
-			<li>1.0</li>
-	</supportedVersions>
+      <li>1.0</li>
+      <li>1.1</li>
+   </supportedVersions>
+	<modDependencies>
+      <li>
+        <packageId>UnlimitedHugs.HugsLib</packageId>
+        <displayName>HugsLib</displayName>
+        <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=818773962</steamWorkshopUrl>
+      </li>
+	  <li>
+        <packageId>roolo.giddyupcore</packageId>
+        <displayName>Giddy-up! Core</displayName>
+        <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1216999901</steamWorkshopUrl>
+      </li>
+     
+    </modDependencies>
+	
+		<packageId>roolo.giddyuprideandroll</packageId>
 	<description>Giddy-up! Let colonists Ride to their destination and Roll. 
 
 &lt;color=orange&gt;&lt;b&gt;Dependencies &lt;/b&gt;&lt;/color&gt;

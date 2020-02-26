@@ -1,0 +1,5 @@
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.1\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.csprojAssemblyReference.cache
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.1\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.csproj.CoreCompileInputs.cache
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.1\Assemblies\GiddyUpRideAndRoll.dll
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.1\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.csproj.CopyComplete
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.1\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.dll
