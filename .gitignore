@@ -1,3 +1,5 @@
 *.vs
 Source/Giddy-up-Ride-and-Roll/.vs/*
 Source/Giddy-up-Ride-and-Roll/obj/*
+v1.1/Source/Giddy-up-Core/obj/*
+
