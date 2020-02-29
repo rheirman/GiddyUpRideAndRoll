@@ -20,7 +20,15 @@ namespace GiddyUpRideAndRoll.Jobs
         private Pawn Followee {
             get
             {
-                return (Pawn)TargetA;
+                if(TargetA.Thing is Pawn pawn){
+
+                    return pawn;
+                }
+                else
+                {
+                    Log.Message("TargetA is a " + TargetA.Label);
+                    return null;
+                }
             }
         }
         int moveInterval = Rand.Range(300, 1200);
@@ -28,8 +36,8 @@ namespace GiddyUpRideAndRoll.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            this.FailOn(() => pawn.Map == null || this.Followee == null);
             initialJob = Followee.CurJobDef;
-            this.FailOn(() => pawn.Map == null);
             Toil firstToil = new Toil {
                 initAction = delegate
                 {
@@ -42,7 +50,8 @@ namespace GiddyUpRideAndRoll.Jobs
             {
                 tickAction = delegate
                 {
-                    if (this.Followee.Map == null ||
+                    if (this.Followee == null ||
+                       this.Followee.Map == null ||
                        this.Followee.Dead ||
                        this.Followee.Downed ||
                        this.Followee.InMentalState ||
