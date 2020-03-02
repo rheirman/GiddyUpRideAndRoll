@@ -20,9 +20,9 @@
      
     </modDependencies>
     <loadAfter>
+	  <li>UnlimitedHugs.HugsLib</li>
       <li>roolo.giddyupcore</li>
     </loadAfter>
-	
 		<packageId>roolo.giddyuprideandroll</packageId>
 	<description>Giddy-up! Let colonists Ride to their destination and Roll. 
 
