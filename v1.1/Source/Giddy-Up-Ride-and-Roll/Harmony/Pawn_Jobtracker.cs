@@ -228,7 +228,7 @@ namespace GiddyUpRideAndRoll.Harmony
         {
             if (animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState || !animal.Spawned) //animal in bad state, should return before checking other things
             {
-                return true; 
+                return true;
             }
 
             if (animal.Faction == null || animal.Faction != Faction.OfPlayer) //animal has wrong faction
@@ -236,7 +236,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 return true;
             }
 
-            if ( animal.health != null && animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
+            if (animal.health != null && animal.health.summaryHealth.SummaryHealthPercent < 1) //animal wounded
             {
                 return true;
             }
@@ -244,24 +244,21 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return true;
             }
-            if (animal.needs != null && animal.needs.food != null && ((animal.needs.food.CurCategory >= HungerCategory.UrgentlyHungry))){ //animal needs break
-                return true;
-            }
-            if(animal.needs != null && animal.needs.rest != null && (animal.needs.rest.CurCategory >= RestCategory.VeryTired))
+            if (animal.HungryOrTired())
             {
                 return true;
             }
 
             if (animal.GetLord() != null)
             {
-                if(animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan) //animal forming caravan
+                if (animal.GetLord().LordJob != null && animal.GetLord().LordJob is LordJob_FormAndSendCaravan) //animal forming caravan
                 {
                     return true;
                 }
             }
-            if(animal.CurJob != null && animal.CurJob.def == JobDefOf.LayDown && animal.needs != null && animal.needs.rest.CurLevelPercentage < 0.5f)//only allow resting animals if they have enough energy. 
+            if (animal.CurJob != null && animal.CurJob.def == JobDefOf.LayDown && animal.needs != null && animal.needs.rest.CurLevelPercentage < 0.5f)//only allow resting animals if they have enough energy. 
             {
-                return true; 
+                return true;
             }
 
             if (animal.CurJob != null && (animal.CurJob.def == JobDefOf.Lovin || animal.CurJob.def == JobDefOf.Ingest || animal.CurJob.def == GUC_JobDefOf.Mounted)) //animal occupied
@@ -272,6 +269,8 @@ namespace GiddyUpRideAndRoll.Harmony
             return false;
 
         }
+
+
 
         //uses abstract unit of time. Real time values aren't needed, only relative values. 
         private static float CalculateTimeNeeded(Pawn pawn, ref LocalTargetInfo target, LocalTargetInfo secondTarget, float firstToSecondTargetDistance, Pawn animal, bool firstTargetNoMount, bool secondTargetNoMount, Area_GU areaDropAnimal)

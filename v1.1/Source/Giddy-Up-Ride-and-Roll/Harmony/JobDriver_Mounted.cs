@@ -35,6 +35,10 @@ namespace GiddyUpRideAndRoll.Harmony
                 {
                     __result = true;
                 }
+                if(!__instance.Rider.Drafted && __instance.pawn.HungryOrTired())
+                {
+                    __result = true;
+                }
                 if(__instance.Rider.CurJob.def == JobDefOf.Hunt && Base.noMountedHunting)
                 {
                     __result = true;

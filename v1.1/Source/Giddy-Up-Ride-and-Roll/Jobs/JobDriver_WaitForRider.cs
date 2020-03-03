@@ -26,7 +26,6 @@ namespace GiddyUpRideAndRoll.Jobs
                 }
                 else
                 {
-                    Log.Message("TargetA is a " + TargetA.Label);
                     return null;
                 }
             }
@@ -50,8 +49,7 @@ namespace GiddyUpRideAndRoll.Jobs
             {
                 tickAction = delegate
                 {
-                    if (this.Followee == null ||
-                       this.Followee.Map == null ||
+                    if (this.Followee.Map == null ||
                        this.Followee.Dead ||
                        this.Followee.Downed ||
                        this.Followee.InMentalState ||
@@ -63,7 +61,8 @@ namespace GiddyUpRideAndRoll.Jobs
                        pawn.needs.rest != null && pawn.needs.rest.CurCategory >= RestCategory.VeryTired ||
                        (this.Followee.GetRoom() != null && !(this.Followee.GetRoom().Role == GU_RR_DefOf.Barn || this.Followee.GetRoom().Role == RoomRoleDefOf.None)))//Don't allow animals to follow pawns inside
                     {
-                        this.EndJobWith(JobCondition.Incompletable);
+                        this.EndJobWith(JobCondition.Succeeded);
+                        return;
                     }   
                     
                     if (pawn.IsHashIntervalTick(moveInterval) && !this.pawn.pather.Moving)
@@ -80,15 +79,23 @@ namespace GiddyUpRideAndRoll.Jobs
             };
             toil.AddFinishAction(() =>
             {
-                if(Base.Instance.GetExtendedDataStorage() is ExtendedDataStorage store)
-                {
-                    ExtendedPawnData animalData = store.GetExtendedDataFor(pawn);
-                    ExtendedPawnData pawnData = store.GetExtendedDataFor(Followee);
-                    pawnData.owning = null;
-                    animalData.ownedBy = null;
-                }
+                UnsetOwnership();
             });
             yield return toil;
+        }
+
+        private void UnsetOwnership()
+        {
+            if (Base.Instance.GetExtendedDataStorage() is ExtendedDataStorage store)
+            {
+                ExtendedPawnData animalData = store.GetExtendedDataFor(pawn);
+                if (animalData.ownedBy != null)
+                {
+                    ExtendedPawnData riderData = store.GetExtendedDataFor(animalData.ownedBy);
+                    riderData.owning = null;
+                }
+                animalData.ownedBy = null;
+            }
         }
 
         private void WalkRandomNearby()
