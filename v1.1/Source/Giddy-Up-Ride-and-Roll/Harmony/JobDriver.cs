@@ -16,13 +16,12 @@ namespace GiddyUpRideAndRoll.Harmony
     [HarmonyPatch(typeof(JobDriver), "SetupToils")]
     class JobDriver_SetupToils
     {
-        static void Postfix(JobDriver __instance)
+        static void Postfix(JobDriver __instance, ref List<Toil> ___toils)
         {            
             if (__instance.pawn.Map == null)
             {
                 return;
             }
-            List<Toil> toils = Traverse.Create(__instance).Field("toils").GetValue<List<Toil>>();
             if (__instance.pawn.Faction != Faction.OfPlayer || __instance.pawn.Drafted)
             {
                 return;
@@ -44,7 +43,7 @@ namespace GiddyUpRideAndRoll.Harmony
             if (pawnData.mount != null && areaNoMount != null && areaDropAnimal != null)
             {
 
-                foreach (Toil toil in toils)
+                foreach (Toil toil in ___toils)
                 {
                     //checkedToil makes sure the ActiveCells.Contains is only called once, preventing performance impact. 
                     bool checkedToil = false;

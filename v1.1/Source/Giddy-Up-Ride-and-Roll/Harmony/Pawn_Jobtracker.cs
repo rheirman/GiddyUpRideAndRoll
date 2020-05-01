@@ -20,10 +20,9 @@ namespace GiddyUpRideAndRoll.Harmony
     [HarmonyPatch(typeof(Pawn_JobTracker), "DetermineNextJob")]
     static class Pawn_Jobtracker_DetermineNextJob
     {
-        static void Postfix(Pawn_JobTracker __instance, ref ThinkResult __result)
+        static void Postfix(Pawn_JobTracker __instance, ref ThinkResult __result, ref Pawn ___pawn)
         {
-            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-            if (!pawn.IsColonistPlayerControlled || !pawn.RaceProps.Humanlike)
+            if (!___pawn.IsColonistPlayerControlled || !___pawn.RaceProps.Humanlike)
             {
                 return;
             }
@@ -35,11 +34,11 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-            if (pawn.Drafted)
+            if (___pawn.Drafted)
             {
                 return;
             }
-            if (pawn.InMentalState)
+            if (___pawn.InMentalState)
             {
                 return;
             }
@@ -48,7 +47,7 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-            ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(___pawn);
             if(pawnData.mount != null)
             {
                 return; 
@@ -76,7 +75,7 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-            Area_GU area = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
+            Area_GU area = (Area_GU)___pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
             //TODO: make sure mounts are parked of when pawn wants to enter area with mount.
 
             if (Base.Instance == null)
@@ -93,7 +92,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 return;
             }
 
-            if(pawn.mindState != null && pawn.mindState.duty != null && (pawn.mindState.duty.def == DutyDefOf.TravelOrWait || pawn.mindState.duty.def == DutyDefOf.TravelOrLeave))
+            if(___pawn.mindState != null && ___pawn.mindState.duty != null && (___pawn.mindState.duty.def == DutyDefOf.TravelOrWait || ___pawn.mindState.duty.def == DutyDefOf.TravelOrLeave))
             {
                 return;
             }
@@ -101,7 +100,7 @@ namespace GiddyUpRideAndRoll.Harmony
             Pawn bestChoiceAnimal = null;
             //Pawn bestChoiceAnimal = null;
 
-            float pawnTargetDistance = DistanceUtility.QuickDistance(pawn.Position, target.Cell);
+            float pawnTargetDistance = DistanceUtility.QuickDistance(___pawn.Position, target.Cell);
             //Log.Message("pawnTargetDistance: " + pawnTargetDistance);
             float firstToSecondTargetDistance = 0;
             if (__result.Job.def == JobDefOf.HaulToCell || __result.Job.def == JobDefOf.HaulToContainer)
@@ -115,10 +114,10 @@ namespace GiddyUpRideAndRoll.Harmony
 
             if (totalDistance > Base.minAutoMountDistance)
             {
-                bestChoiceAnimal = GetBestChoiceAnimal(pawn, target, targetB, pawnTargetDistance, firstToSecondTargetDistance, store);
+                bestChoiceAnimal = GetBestChoiceAnimal(___pawn, target, targetB, pawnTargetDistance, firstToSecondTargetDistance, store);
                 if (bestChoiceAnimal != null)
                 {
-                    __result = InsertMountingJobs(pawn, bestChoiceAnimal, target, targetB, ref pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
+                    __result = InsertMountingJobs(___pawn, bestChoiceAnimal, target, targetB, ref pawnData, store.GetExtendedDataFor(bestChoiceAnimal), __instance, __result);
                 }
                 //Log.Message("timeNeededOriginal: " + timeNeededOriginal);
                 //Log.Message("adjusted ticks per move: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, closestAnimal, true));
