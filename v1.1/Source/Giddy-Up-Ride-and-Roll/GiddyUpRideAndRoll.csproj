@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -35,6 +35,9 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Lib.Harmony.2.0.0.6\lib\net472\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="0MultiplayerAPI">
+      <HintPath>packages\0MultiplayerAPI.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -317,6 +320,7 @@
     <Compile Include="GU_RR_JobDefOf.cs" />
     <Compile Include="Depricated\JobDriver_RideToJob.cs" />
     <Compile Include="Jobs\JobDriver_WaitForRider.cs" />
+    <Compile Include="ModExtensions\MultiplayerPatch.cs" />
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Anyone.cs" />
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Master.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using Multiplayer.API;
 
 namespace GiddyUpRideAndRoll.PawnColumns
 {
@@ -22,6 +23,7 @@ namespace GiddyUpRideAndRoll.PawnColumns
             return pawnData.mountableByMaster;
         }
 
+        [SyncMethod]
         protected override void SetValue(Pawn pawn, bool value)
         {
             ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
