@@ -1,4 +1,4 @@
-﻿using GiddyUpCore.Storage;
+using GiddyUpCore.Storage;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Text;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Multiplayer.API;
 
 namespace GiddyUpRideAndRoll.Harmony
 {
@@ -31,10 +32,16 @@ namespace GiddyUpRideAndRoll.Harmony
                 icon = ContentFinder<Texture2D>.Get(("UI/" + "LeaveRider"), true),
                 action = () =>
                 {
-                    __instance.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                    //__instance.jobs.EndCurrentJob(JobCondition.InterruptForced); moving to external method to sync across multiplayer clients
+                    PawnEndCurrentJob(__instance);
                 }
             };
             return gizmo;
+        }
+        [SyncMethod]
+        private static void PawnEndCurrentJob(Pawn pawn)
+        {
+            pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
         }
     }
 }

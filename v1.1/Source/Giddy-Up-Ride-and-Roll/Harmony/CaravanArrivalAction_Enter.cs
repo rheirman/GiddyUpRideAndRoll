@@ -10,6 +10,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Verse;
 using Verse.AI;
+using Multiplayer.API;
 
 namespace GiddyUpRideAndRoll.Harmony
 {
@@ -31,6 +32,7 @@ namespace GiddyUpRideAndRoll.Harmony
             }
 
         }
+        [SyncMethod]
         public static void MountCaravanMounts(List<Pawn> pawns)
         {
             
