@@ -152,7 +152,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
             //If owning an animal, prefer this animal if it still gets you to the goal quicker than walking. 
             //This'll make sure pawns prefer the animals they were already riding previously.
-            if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalNotAvailable(pawnData.owning) && pawn.CanReserve(pawnData.owning))
+            if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalNotAvailable(pawnData.owning, pawn) && pawn.CanReserve(pawnData.owning))
             {
                 if (CalculateTimeNeeded(pawn, ref target, secondTarget, firstToSecondTargetDistance, pawnData.owning, firstTargetNoMount, secondTargetNoMount, areaDropAnimal) < timeNeededMin)
                 {
@@ -164,7 +164,7 @@ namespace GiddyUpRideAndRoll.Harmony
                                     where p.RaceProps.Animal && IsMountableUtility.isMountable(p) && p.CurJob != null && p.CurJob.def != GUC_JobDefOf.Mounted
                                     select p)
             {
-                if (AnimalNotAvailable(animal) || !pawn.CanReserve(animal))
+                if (AnimalNotAvailable(animal, pawn) || !pawn.CanReserve(animal))
                 {
                     continue;
                 }
@@ -223,9 +223,14 @@ namespace GiddyUpRideAndRoll.Harmony
             return __result;
         }
 
-        private static bool AnimalNotAvailable(Pawn animal)
+        private static bool AnimalNotAvailable(Pawn animal, Pawn rider)
         {
             if (animal.Dead || animal.Downed || animal.IsBurning() || animal.InMentalState || !animal.Spawned) //animal in bad state, should return before checking other things
+            {
+                return true;
+            }
+
+            if (animal.IsForbidden(rider))
             {
                 return true;
             }
