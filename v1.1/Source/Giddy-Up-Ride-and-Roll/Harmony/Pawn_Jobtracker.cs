@@ -42,6 +42,10 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
+            if (__result.Job.def.defName == "Goto")
+            {
+                return;
+            }
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             if(store == null)
             {
