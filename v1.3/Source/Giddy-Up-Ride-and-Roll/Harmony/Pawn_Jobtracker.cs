@@ -42,6 +42,10 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
+            if (___pawn.IsBorrowedByAnyFaction())
+            {
+                return;
+            }
             ExtendedDataStorage store = Base.Instance.GetExtendedDataStorage();
             if(store == null)
             {
