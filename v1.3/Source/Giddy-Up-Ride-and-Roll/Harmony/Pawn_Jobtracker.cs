@@ -75,8 +75,6 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 return;
             }
-            Area_GU area = (Area_GU)___pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
-            //TODO: make sure mounts are parked of when pawn wants to enter area with mount.
 
             if (Base.Instance == null)
             {
@@ -101,17 +99,19 @@ namespace GiddyUpRideAndRoll.Harmony
             //Pawn bestChoiceAnimal = null;
 
             float pawnTargetDistance = DistanceUtility.QuickDistance(___pawn.Position, firstTarget.Cell);
-            //Log.Message("pawnTargetDistance: " + pawnTargetDistance);
+            Log.Message("pawnTargetDistance: " + pawnTargetDistance);
             float firstToSecondTargetDistance = 0;
             if (__result.Job.def == JobDefOf.HaulToCell || __result.Job.def == JobDefOf.HaulToContainer)
             {
                 if (secondTarget.IsValid)
                 {
                     firstToSecondTargetDistance = DistanceUtility.QuickDistance(firstTarget.Cell, secondTarget.Cell);
+                    Log.Message("firstToSecondTargetDistance: " + pawnTargetDistance);
+
                 }
             }
             float totalDistance = pawnTargetDistance + firstToSecondTargetDistance;
-
+            Log.Message("totalDistance: " + totalDistance);
             if (totalDistance > Base.minAutoMountDistance)
             {
                 bestChoiceAnimal = GetBestChoiceAnimal(___pawn, firstTarget, secondTarget, pawnTargetDistance, firstToSecondTargetDistance, store);
@@ -132,7 +132,8 @@ namespace GiddyUpRideAndRoll.Harmony
 
             //float minDistance = float.MaxValue;
             Pawn closestAnimal = null;
-            float timeNeededMin = (pawnTargetDistance + firstToSecondTargetDistance) * pawn.GetStatValue(StatDefOf.MoveSpeed);
+            float timeNeededMin = (pawnTargetDistance + firstToSecondTargetDistance) / pawn.GetStatValue(StatDefOf.MoveSpeed);
+            Log.Message("timeNeededMin: " + timeNeededMin);
             ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
             bool firstTargetNoMount = false;
             bool secondTargetNoMount = false;
@@ -302,10 +303,21 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 rideDistance += firstToSecondTargetDistance;
             }
+            Log.Message("Animal: " + animal.Name);
+            Log.Message("walk distance to animal: " + walkDistance);
+            Log.Message("ride distance: " + rideDistance);
+
             var animalBaseSpeed = animal.GetStatValue(StatDefOf.MoveSpeed);
+            Log.Message("animal base speed: " + animalBaseSpeed);
             var pawnPaseSpeed = pawn.GetStatValue(StatDefOf.MoveSpeed);
+            Log.Message("pawn base speed: " + pawnPaseSpeed);
+
             var animalMountedSpeed = GiddyUpCore.Stats.StatPart_Riding.GetRidingSpeed(animalBaseSpeed, animal, pawn);
-            float timeNeeded = walkDistance * pawnPaseSpeed + rideDistance * animalMountedSpeed;
+
+            Log.Message("animalMountedSpeed: " + animalMountedSpeed);
+
+            float timeNeeded = walkDistance/pawnPaseSpeed + rideDistance/animalMountedSpeed;
+            Log.Message("timeNeeded: " + timeNeeded);
             return timeNeeded;
         }
 

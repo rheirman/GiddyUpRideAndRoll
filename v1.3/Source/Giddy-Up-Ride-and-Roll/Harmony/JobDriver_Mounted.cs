@@ -57,7 +57,8 @@ namespace GiddyUpRideAndRoll.Harmony
         static void Postfix(JobDriver_Mounted __instance)
         {
             ExtendedPawnData pawnData = Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(__instance.pawn);
-            if(!__instance.Rider.Drafted && __instance.pawn.Faction == Faction.OfPlayer)
+            bool isRoped = __instance.pawn.roping != null && __instance.pawn.roping.IsRoped;
+            if(!__instance.Rider.Drafted && __instance.pawn.Faction == Faction.OfPlayer && !isRoped)
             {
                 if (pawnData.ownedBy != null && !__instance.interrupted && __instance.Rider.GetCaravan() == null)
                 {

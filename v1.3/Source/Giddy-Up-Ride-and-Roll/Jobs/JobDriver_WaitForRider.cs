@@ -53,8 +53,7 @@ namespace GiddyUpRideAndRoll.Jobs
                        this.Followee.Dead ||
                        this.Followee.Downed ||
                        this.Followee.InMentalState ||
-                       this.Followee.jobs.curJob.def == JobDefOf.LayDown ||
-                       this.Followee.jobs.curJob.def == JobDefOf.Research ||
+                       this.Followee.InBed() ||
                        this.Followee.CurJobDef == GUC_JobDefOf.Mount ||
                        pawn.health.HasHediffsNeedingTend() ||
                        (pawn.needs.food != null && pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry) ||
@@ -68,7 +67,7 @@ namespace GiddyUpRideAndRoll.Jobs
                     if (pawn.IsHashIntervalTick(moveInterval) && !this.pawn.pather.Moving)
                     {
                         WalkRandomNearby();
-                        moveInterval = Rand.Range(300, 1200);
+                        moveInterval = Rand.Range(300, 600);
                     }
                     if (TimeUntilExpire(pawn.CurJob) < 10 && Followee.CurJobDef == initialJob)
                     {

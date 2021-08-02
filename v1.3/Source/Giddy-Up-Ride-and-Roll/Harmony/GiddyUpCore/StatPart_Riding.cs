@@ -18,13 +18,13 @@ namespace GiddyUpRideAndRoll.Harmony
     [HarmonyPatch(typeof(StatPart_Riding), "TransformValue")]
     class StatPart_Riding_TransformValue
     {
-        static void PostFix(StatRequest req, ref float result)
+        static void PostFix(StatRequest req, ref float __result)
         {
             if (req.Thing is Pawn pawn)
             {
                 if (pawn.CurJob != null && pawn.jobs.curDriver is JobDriver_WaitForRider jobDriver)
                 {
-                    jobDriver.Followee.GetStatValue(StatDefOf.MoveSpeed);
+                    __result = jobDriver.Followee.GetStatValue(StatDefOf.MoveSpeed);
                 }
             }
         }
