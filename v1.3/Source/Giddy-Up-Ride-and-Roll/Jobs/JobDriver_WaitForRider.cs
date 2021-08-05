@@ -3,6 +3,7 @@ using GiddyUpCore.Storage;
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Verse;
@@ -78,6 +79,16 @@ namespace GiddyUpRideAndRoll.Jobs
             };
             toil.AddFinishAction(() =>
             {
+                if (this.Followee.CurJobDef != GUC_JobDefOf.Mount)
+                {
+                    var pen = AnimalPenUtility.GetPenAnimalShouldBeTakenTo(this.Followee, this.pawn, out string failReason, true, true, false, true);
+                    if (pen != null)
+                    {
+                        IntVec3 c = AnimalPenUtility.FindPlaceInPenToStand(pen, this.Followee);
+                        this.Followee.jobs.jobQueue.EnqueueFirst(new Job(JobDefOf.RopeToPen, this.pawn, c));
+                    }
+                }
+
                 UnsetOwnership();
             });
             yield return toil;

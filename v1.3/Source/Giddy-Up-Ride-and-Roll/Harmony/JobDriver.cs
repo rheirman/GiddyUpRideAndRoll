@@ -1,4 +1,5 @@
-﻿using GiddyUpCore.Storage;
+﻿using GiddyUpCore.Jobs;
+using GiddyUpCore.Storage;
 using GiddyUpCore.Utilities;
 using GiddyUpCore.Zones;
 using HarmonyLib;
@@ -50,25 +51,25 @@ namespace GiddyUpRideAndRoll.Harmony
                     toil.AddPreTickAction(delegate
                     {
 
-                        if (!checkedToil && pawnData.mount != null && areaDropAnimal.ActiveCells.Count() > 0 && areaNoMount.ActiveCells.Contains(toil.actor.pather.Destination.Cell))
+                        if (!checkedToil && pawnData.mount != null && __instance.pawn.CurJobDef != JobDefOf.RopeToPen && areaNoMount.ActiveCells.Contains(toil.actor.pather.Destination.Cell))
                         {
-                            //Toil parkToil = ParkToil(__instance, toils, pawnData, areaDropAnimal, toils[__instance.CurToilIndex]);
-                            //toils.Add(parkToil);
-                            parkLoc = DistanceUtility.getClosestAreaLoc(toil.actor.pather.Destination.Cell, areaDropAnimal);
-                            originalLoc = toil.actor.pather.Destination.Cell;
 
-                            if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
-                            {
-                                toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
-                                startedPark = true;
-                            }
-                            else
-                            {
-                                Messages.Message("GU_RR_NotReachable_DropAnimal_Message".Translate(), new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
+                            var pen = AnimalPenUtility.GetPenAnimalShouldBeTakenTo(__instance.pawn, pawnData.mount, out string failReason, true, true, false, true);
+                            if (pen != null)
+                            { 
+                                parkLoc = AnimalPenUtility.FindPlaceInPenToStand(pen, __instance.pawn);
+                                originalLoc = toil.actor.pather.Destination.Cell;
+
+                                if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
+                                {
+                                    toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
+                                    startedPark = true;
+                                }
                             }
                         }
                         checkedToil = true;
-                        if (startedPark && toil.actor.pather.nextCell == parkLoc){
+                        if (startedPark && toil.actor.pather.nextCell == parkLoc)
+                        {
                             pawnData.mount = null;
                             toil.actor.pather.StartPath(originalLoc, PathEndMode.OnCell);
                             if (pawnData.owning != null)

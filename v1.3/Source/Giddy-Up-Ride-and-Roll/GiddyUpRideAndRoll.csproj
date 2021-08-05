@@ -62,8 +62,6 @@
     <Compile Include="PawnColumns\PawnColumnWorker_RR_Mountable_Master.cs" />
     <Compile Include="Depricated\ReserveUtility.cs" />
     <Compile Include="Utitlities.cs" />
-    <Compile Include="Zones\Designator_GU_DropAnimal_Clear.cs" />
-    <Compile Include="Zones\Designator_GU_DropAnimal_Expand.cs" />
     <Compile Include="Zones\Designator_GU_NoMount_Clear.cs" />
     <Compile Include="Zones\Designator_GU_NoMount_Expand.cs" />
   </ItemGroup>
