@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <GU_RR_NoMountedHunting_Title>禁止騎乘狩獵</GU_RR_NoMountedHunting_Title>
+  <GU_RR_NoMountedHunting_Description>禁止騎乘狩獵，當使用戰鬥擴展時，建議把它打開，否則動物在玩耍時可能會受到傷害。</GU_RR_NoMountedHunting_Description>
+  <GU_RR_MinAutoMountDistance_Title>最小考慮騎乘距離</GU_RR_MinAutoMountDistance_Title>
+  <GU_RR_MinAutoMountDistance_Description>人們會考慮騎乘去工作的最小距離</GU_RR_MinAutoMountDistance_Description>
+  <GU_RR_MinAutoMountDistanceFromAnimal_Title>最小考慮乘騎距離(多工作)</GU_RR_MinAutoMountDistanceFromAnimal_Title>
+  <GU_RR_MinAutoMountDistanceFromAnimal_Description>人們會考慮騎乘去工作的最小距離，果同時選擇了另一個工作，那另一個工作的距離也會被考慮</GU_RR_MinAutoMountDistanceFromAnimal_Description>
+  <GU_RR_Designator_GU_DropAnimal_Expand_Label>釋放點</GU_RR_Designator_GU_DropAnimal_Expand_Label>  <!--Should be short-->
+  <GU_RR_Designator_GU_DropAnimal_Expand_Description>當有人試圖騎著動物進入禁止騎乘的區域時，他會到最近的釋放點從動物身上下來。</GU_RR_Designator_GU_DropAnimal_Expand_Description>
+  <GU_RR_Designator_GU_DropAnimal_Clear_Label>清除釋放點</GU_RR_Designator_GU_DropAnimal_Clear_Label>  <!--Should be short-->
+  <GU_RR_Designator_GU_DropAnimal_Clear_Description>清除掉騎乘點，可以通過拖動鼠標一次清除多個。</GU_RR_Designator_GU_DropAnimal_Clear_Description>
+  <GU_RR_Designator_GU_NoMount_Clear_Label>刪除禁止乘騎區</GU_RR_Designator_GU_NoMount_Clear_Label>  <!--Should be short-->
+  <GU_RR_Designator_GU_NoMount_Clear_Description>清楚掉禁止稱乘騎的區域.</GU_RR_Designator_GU_NoMount_Clear_Description>
+  <GU_RR_Designator_GU_NoMount_Expand_Label>禁止騎乘區 </GU_RR_Designator_GU_NoMount_Expand_Label>
+  <GU_RR_Designator_GU_NoMount_Expand_Description>當人們騎著動物試圖進入這片區域時，會在最近的釋放點從動物身上下來，而不是騎著動物進入這片區域。警告：這僅在設置了釋放點後有效</GU_RR_Designator_GU_NoMount_Expand_Description>
+  <GU_RR_NoDropAnimal_Label>沒有可用釋放點</GU_RR_NoDropAnimal_Label>
+  <GU_RR_NoDropAnimal_Description>禁止騎乘區域已被指定，但不存在釋放點。這樣禁止騎乘的區域沒有效果。請設置一個釋放點。</GU_RR_NoDropAnimal_Description>
+  <GU_RR_NotReachable_DropAnimal_Message>殖民者無法到達釋放點。確保釋放點都是可到達的。</GU_RR_NotReachable_DropAnimal_Message>
+
+</LanguageData>

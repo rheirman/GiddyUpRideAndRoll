@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+<GU_RR_NoMountedHunting_Title>No mounted hunting</GU_RR_NoMountedHunting_Title>
+<GU_RR_NoMountedHunting_Description>Forbid mounted hunting, when using Combat Extended it is recommended to turn this on, as otherwise animals may get harmed while playing the game</GU_RR_NoMountedHunting_Description>
+<GU_RR_MinAutoMountDistance_Title>Min. distance for auto mounting </GU_RR_MinAutoMountDistance_Title>
+<GU_RR_MinAutoMountDistance_Description>Minimum distance from which a pawn will consider using a mount to get to its destination. If the job can be done mounted, the distance to the second target of the job is also taken into account</GU_RR_MinAutoMountDistance_Description>
+<GU_RR_MinAutoMountDistanceFromAnimal_Title>Min. distance for auto mounting from animal</GU_RR_MinAutoMountDistanceFromAnimal_Title>
+<GU_RR_MinAutoMountDistanceFromAnimal_Description>Minimum distance from an animal a pawn is considering, to the job. If the job can be done mounted, the distance to the second target of the job is also taken into account</GU_RR_MinAutoMountDistanceFromAnimal_Description>
+<GU_RR_Designator_GU_NoMount_Clear_Label>Clear forbid riding area</GU_RR_Designator_GU_NoMount_Clear_Label> <!--Should be short-->
+<GU_RR_Designator_GU_NoMount_Clear_Description>Clears the forbid riding area.</GU_RR_Designator_GU_NoMount_Clear_Description>
+<GU_RR_Designator_GU_NoMount_Expand_Label>Expand forbid riding area </GU_RR_Designator_GU_NoMount_Expand_Label>
+<GU_RR_Designator_GU_NoMount_Expand_Description>Before trying to enter a "forbid riding" area on an animal, pawns will drop off their mount at the nearest pen. This will only happen when their destination is inside the forbidden area.</GU_RR_Designator_GU_NoMount_Expand_Description>
+
+<GU_RR_Gizmo_LeaveRider_Label>Leave rider</GU_RR_Gizmo_LeaveRider_Label>
+<GU_RR_Gizmo_LeaveRider_Description>Order the animal to stop waiting for the rider.</GU_RR_Gizmo_LeaveRider_Description>
+</LanguageData>
