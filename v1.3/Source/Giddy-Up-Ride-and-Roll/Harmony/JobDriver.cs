@@ -56,7 +56,7 @@ namespace GiddyUpRideAndRoll.Harmony
 
                             var pen = AnimalPenUtility.GetPenAnimalShouldBeTakenTo(__instance.pawn, pawnData.mount, out string failReason, true, true, false, true);
                             if (pen != null)
-                            { 
+                            {
                                 parkLoc = AnimalPenUtility.FindPlaceInPenToStand(pen, __instance.pawn);
                                 originalLoc = toil.actor.pather.Destination.Cell;
 

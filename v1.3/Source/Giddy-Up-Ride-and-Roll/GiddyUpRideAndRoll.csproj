@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Alerts\Alert_NoDropAnimal.cs" />
     <Compile Include="Base.cs" />
+    <Compile Include="Harmony\AnimalPenUtility.cs" />
+    <Compile Include="Harmony\CompAnimalPenMarker.cs" />
     <Compile Include="Harmony\FloatMenuMakerMap.cs" />
     <Compile Include="Harmony\GiddyUpCore\StatPart_Riding.cs" />
     <Compile Include="Harmony\JobDriver_Mount.cs" />

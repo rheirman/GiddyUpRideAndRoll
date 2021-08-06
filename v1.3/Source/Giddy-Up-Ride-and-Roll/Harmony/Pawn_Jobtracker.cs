@@ -150,15 +150,11 @@ namespace GiddyUpRideAndRoll.Harmony
             }
             
 
-            //If owning an animal, prefer this animal if it still gets you to the goal quicker than walking. 
+            //If owning an animal, prefer this animal
             //This'll make sure pawns prefer the animals they were already riding previously.
             if (pawnData.owning != null && pawnData.owning.Spawned && !AnimalNotAvailable(pawnData.owning, pawn) && pawn.CanReserve(pawnData.owning))
             {
-                var timeNeededWhenMounted = CalculateTimeNeeded(pawn, ref target, secondTarget, firstToSecondTargetDistance, pawnData.owning, firstTargetNoMount, secondTargetNoMount, areaDropAnimal);
-                if (timeNeededWhenMounted < timeNeededMin)
-                {
-                    return pawnData.owning;
-                }
+                return pawnData.owning;  
             }
             //Otherwise search the animal on the map that gets you to the goal the quickest
             foreach (Pawn animal in from p in pawn.Map.mapPawns.AllPawnsSpawned
