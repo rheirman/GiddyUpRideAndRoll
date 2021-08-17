@@ -100,7 +100,6 @@ namespace GiddyUpRideAndRoll.Harmony
             }
 
             Pawn bestChoiceAnimal = null;
-            //Pawn bestChoiceAnimal = null;
 
             float pawnTargetDistance = DistanceUtility.QuickDistance(___pawn.Position, firstTarget.Cell);
             float firstToSecondTargetDistance = 0;
@@ -276,7 +275,7 @@ namespace GiddyUpRideAndRoll.Harmony
         //uses abstract unit of time. Real time values aren't needed, only relative values. 
         private static float CalculateTimeNeeded(Pawn pawn, ref LocalTargetInfo target, LocalTargetInfo secondTarget, float firstToSecondTargetDistance, Pawn animal, bool firstTargetNoMount, bool secondTargetNoMount, Area_GU areaDropAnimal)
         {
-            
+
 
             float walkDistance = DistanceUtility.QuickDistance(pawn.Position, animal.Position);
             float rideDistance = DistanceUtility.QuickDistance(animal.Position, target.Cell);
@@ -298,6 +297,12 @@ namespace GiddyUpRideAndRoll.Harmony
             {
                 rideDistance += firstToSecondTargetDistance;
             }
+            Area_GU areaNoMount = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
+            if(areaNoMount != null && areaNoMount.ActiveCells.Contains(target.Cell) || areaNoMount.ActiveCells.Contains(secondTarget.Cell))
+            {
+                walkDistance += 10; //apply a fixed 10 cell walk penalty when the animal has to be penned
+            }
+
             var animalBaseSpeed = animal.GetStatValue(StatDefOf.MoveSpeed);
             var pawnPaseSpeed = pawn.GetStatValue(StatDefOf.MoveSpeed);
 

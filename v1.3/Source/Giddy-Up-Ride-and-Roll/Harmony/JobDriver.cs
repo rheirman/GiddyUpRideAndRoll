@@ -6,6 +6,7 @@ using HarmonyLib;
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Verse;
@@ -41,33 +42,29 @@ namespace GiddyUpRideAndRoll.Harmony
             IntVec3 originalLoc = new IntVec3();
             IntVec3 parkLoc = new IntVec3();
             PathEndMode endMode;
-            if (pawnData.mount != null && areaNoMount != null && areaDropAnimal != null)
-            {
 
+            if (pawnData.mount != null && areaNoMount != null)
+            {
                 foreach (Toil toil in ___toils)
                 {
                     //checkedToil makes sure the ActiveCells.Contains is only called once, preventing performance impact. 
-                    bool checkedToil = false;
                     toil.AddPreTickAction(delegate
                     {
 
-                        if (!checkedToil && pawnData.mount != null && __instance.pawn.CurJobDef != JobDefOf.RopeToPen && areaNoMount.ActiveCells.Contains(toil.actor.pather.Destination.Cell))
+                        if (__instance.pawn.IsHashIntervalTick(60) && !startedPark && pawnData.mount != null && __instance.pawn.CurJobDef != JobDefOf.RopeToPen && areaNoMount.ActiveCells.Contains(toil.actor.pather.Destination.Cell))
                         {
-
-                            var pen = AnimalPenUtility.GetPenAnimalShouldBeTakenTo(__instance.pawn, pawnData.mount, out string failReason, true, true, false, true);
-                            if (pen != null)
+                            originalLoc = toil.actor.pather.Destination.Cell;
+                            if (AnimalPenUtility.NeedsToBeManagedByRope(pawnData.mount) || areaDropAnimal == null)
                             {
-                                parkLoc = AnimalPenUtility.FindPlaceInPenToStand(pen, __instance.pawn);
-                                originalLoc = toil.actor.pather.Destination.Cell;
-
-                                if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
-                                {
-                                    toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
-                                    startedPark = true;
-                                }
+                                startedPark = TryParkAnimalPen(__instance, pawnData, ref parkLoc, toil);
                             }
+                            else
+                            {
+                                startedPark = TryParkAnimalDropSpot(areaDropAnimal, ref parkLoc, toil);
+                            }
+
                         }
-                        checkedToil = true;
+                        //checkedToil = true;
                         if (startedPark && toil.actor.pather.nextCell == parkLoc)
                         {
                             pawnData.mount = null;
@@ -78,7 +75,6 @@ namespace GiddyUpRideAndRoll.Harmony
                                 animalData.ownedBy = null;
                                 pawnData.owning = null;
                             }
-
                         }
                     });
                 }
@@ -86,6 +82,43 @@ namespace GiddyUpRideAndRoll.Harmony
 
         }
 
+        private static bool TryParkAnimalPen(JobDriver __instance, ExtendedPawnData pawnData, ref IntVec3 parkLoc, Toil toil)
+        {
+            bool succeeded = false;
+            var pen = AnimalPenUtility.GetPenAnimalShouldBeTakenTo(__instance.pawn, pawnData.mount, out string failReason, true, true, false, true);
+            if (pen != null)
+            {
+                parkLoc = AnimalPenUtility.FindPlaceInPenToStand(pen, __instance.pawn);
+
+                if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
+                {
+                    toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
+                    succeeded = true;
+                }
+            }
+            else
+            {
+                Log.Message(pawnData.mount.Name + " failed: " + failReason);
+            }
+            return succeeded;
+        }
+
+        private static bool TryParkAnimalDropSpot(Area_GU areaDropAnimal, ref IntVec3 parkLoc, Toil toil)
+        {
+            
+            bool succeeded = false;
+            parkLoc = DistanceUtility.getClosestAreaLoc(toil.actor.pather.Destination.Cell, areaDropAnimal);
+            if (toil.actor.Map.reachability.CanReach(toil.actor.Position, parkLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
+            {
+                toil.actor.pather.StartPath(parkLoc, PathEndMode.OnCell);
+                succeeded = true;
+            }
+            else
+            {
+                Messages.Message("GU_RR_NotReachable_DropAnimal_Message".Translate(), new RimWorld.Planet.GlobalTargetInfo(parkLoc, toil.actor.Map), MessageTypeDefOf.NegativeEvent);
+            }
+            return succeeded;
+        }
     }
             
 
