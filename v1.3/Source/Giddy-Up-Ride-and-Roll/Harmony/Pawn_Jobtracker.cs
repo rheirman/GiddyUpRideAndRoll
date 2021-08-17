@@ -298,7 +298,7 @@ namespace GiddyUpRideAndRoll.Harmony
                 rideDistance += firstToSecondTargetDistance;
             }
             Area_GU areaNoMount = (Area_GU)pawn.Map.areaManager.GetLabeled(Base.NOMOUNT_LABEL);
-            if(areaNoMount != null && areaNoMount.ActiveCells.Contains(target.Cell) || areaNoMount.ActiveCells.Contains(secondTarget.Cell))
+            if(areaNoMount != null && areaNoMount.ActiveCells.Contains(target.Cell) || (secondTarget != null && areaNoMount.ActiveCells.Contains(secondTarget.Cell)))
             {
                 walkDistance += 10; //apply a fixed 10 cell walk penalty when the animal has to be penned
             }
