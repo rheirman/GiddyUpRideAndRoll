@@ -14,14 +14,17 @@ namespace GiddyUpRideAndRoll.Harmony
     [HarmonyPatch(typeof(Pawn), "GetGizmos")]
     public class Pawn_GetGizmos
     {
-        public static void Postfix(ref IEnumerable<Gizmo> __result, Pawn __instance)
+        public static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> gizmos, Pawn __instance)
         {
-            List<Gizmo> gizmoList = __result.ToList();
+            foreach (Gizmo gizmo in gizmos)
+            {
+                yield return gizmo;
+            }
+
             if (__instance.RaceProps.Animal && __instance.CurJob != null && __instance.CurJob.def == GU_RR_DefOf.WaitForRider)
             {
-                gizmoList.Add(CreateGizmo_LeaveRider(__instance));
+                yield return CreateGizmo_LeaveRider(__instance);
             }
-            __result = gizmoList;
         }
         private static Gizmo CreateGizmo_LeaveRider(Pawn __instance)
         {
