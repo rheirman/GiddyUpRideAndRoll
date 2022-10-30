@@ -1,0 +1,8 @@
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Assemblies\GiddyUpRideAndRoll.dll
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.csproj.AssemblyReference.cache
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.GeneratedMSBuildEditorConfig.editorconfig
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.AssemblyInfoInputs.cache
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.AssemblyInfo.cs
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.csproj.CoreCompileInputs.cache
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.csproj.CopyComplete
+C:\Games\App\steamapps\common\RimWorld\Mods\GiddyUpRideAndRoll\v1.4\Source\Giddy-Up-Ride-and-Roll\obj\Debug\GiddyUpRideAndRoll.dll
